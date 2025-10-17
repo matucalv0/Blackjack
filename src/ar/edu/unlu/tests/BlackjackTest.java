@@ -16,6 +16,10 @@ class BlackjackTest {
     private Carta carta;
     private Mazo mazo;
     private Mano mano;
+    private Bankroll banca;
+    private Crupier crupier;
+    private Participante participante;
+
 
 
 
@@ -25,6 +29,8 @@ class BlackjackTest {
         carta = new Carta();
         mazo = new Mazo();
         mano = new Mano();
+        participante = new Participante(jugador);
+
     }
 
 
