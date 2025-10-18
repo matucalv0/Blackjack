@@ -1,5 +1,7 @@
 package ar.edu.unlu.blackjack.model;
 
+import java.util.Objects;
+
 public class Carta {
     Palo palo;
     int numero;
@@ -13,4 +15,14 @@ public class Carta {
         this.palo = palo;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Carta carta)) return false;
+        return numero == carta.numero && palo == carta.palo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(palo, numero);
+    }
 }

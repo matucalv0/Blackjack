@@ -6,6 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -43,6 +46,50 @@ class BlackjackTest {
     @DisplayName("El mazo debe tener 52 cartas")
     void verificarQueELMazoTiene52Cartas(){
         assertEquals(52, mazo.getMazo().size());
+    }
+
+    @Test
+    @DisplayName("El mazo debe contener 13 cartas de trebol, del 1 al 13")
+    void verificarTrebolesEnMazo(){
+        List<Carta> treboles = new ArrayList<Carta>();
+        for (int i = 1; i < 14; i++) {
+            treboles.add(new Carta(i, Palo.TREBOL));
+        }
+
+        assertTrue(mazo.getMazo().containsAll(treboles));
+    }
+
+    @Test
+    @DisplayName("El mazo debe contener 13 cartas de corazones, del 1 al 13")
+    void verificarCorazonesEnMazo(){
+        List<Carta> corazones = new ArrayList<Carta>();
+        for (int i = 1; i < 14; i++) {
+            corazones.add(new Carta(i, Palo.CORAZON));
+        }
+
+        assertTrue(mazo.getMazo().containsAll(corazones));
+    }
+
+    @Test
+    @DisplayName("El mazo debe contener 13 cartas de picas, del 1 al 13")
+    void verificarPicasEnMazo(){
+        List<Carta> picas = new ArrayList<Carta>();
+        for (int i = 1; i < 14; i++) {
+            picas.add(new Carta(i, Palo.TREBOL));
+        }
+
+        assertTrue(mazo.getMazo().containsAll(picas));
+    }
+
+    @Test
+    @DisplayName("El mazo debe contener 13 cartas de diamante, del 1 al 13")
+    void verificarDiamantesEnMazo(){
+        List<Carta> diamantes = new ArrayList<Carta>();
+        for (int i = 1; i < 14; i++) {
+            diamantes.add(new Carta(i, Palo.TREBOL));
+        }
+
+        assertTrue(mazo.getMazo().containsAll(diamantes));
     }
 
 
