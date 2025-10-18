@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +31,7 @@ class BlackjackTest {
         carta = new Carta();
         mazo = new Mazo();
         mano = new Mano();
-        participante = new Participante(jugador);
+        participante = new Participante(mano, jugador);
 
     }
 
@@ -91,6 +92,27 @@ class BlackjackTest {
 
         assertTrue(mazo.getMazo().containsAll(diamantes));
     }
+
+    @Test
+    @DisplayName("Un mazo mezclado debe ser diferente a un mazo inicializado")
+    void verificarMazoMezclado(){
+        Mazo mazoTemp = new Mazo();
+        Stack<Carta> mazoSinMezclar = mazoTemp.getMazo();
+
+        System.out.println(mazoTemp.toString());
+
+
+        mazo.mezclarMazo(); //mezclo el mazo original
+
+        System.out.println(mazo.toString());
+
+
+        assertNotEquals(mazo.getMazo(), mazoSinMezclar); //verifico que NO sean iguales
+
+
+    }
+
+
 
 
 

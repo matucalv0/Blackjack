@@ -25,4 +25,12 @@ public class Carta {
     public int hashCode() {
         return Objects.hash(palo, numero);
     }
+
+    @Override
+    public String toString() {
+        return "Carta{" +
+                "palo=" + palo +
+                ", numero=" + numero +
+                '}';
+    }
 }

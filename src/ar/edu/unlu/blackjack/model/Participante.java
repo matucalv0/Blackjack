@@ -1,22 +1,22 @@
 package ar.edu.unlu.blackjack.model;
 
-public class Participante {
+public class Participante extends ParticipanteBase implements IParticipante {
     Jugador jugador;
-    Mano mano;
 
-    public Participante(Jugador jugador){
+
+    public Participante(Mano mano, Jugador jugador) {
+        super(mano);
         this.jugador = jugador;
     }
 
-    public Participante(Jugador jugador, Mano mano){
-        this.jugador = jugador;
-        this.mano = mano;
+
+    @Override
+    public void dividir() {
+
     }
 
-    public void setMano(Mano mano){
-        this.mano = mano;
+    @Override
+    public void doblar() {
+
     }
-
-
-
 }
