@@ -21,10 +21,8 @@ class BlackjackTest {
     private Participante participante;
 
 
-
-
     @BeforeEach
-    void setUp(){
+    void setUp() {
         jugador = new Jugador("Mateo");
         carta = new Carta();
         mazo = new Mazo();
@@ -34,12 +32,19 @@ class BlackjackTest {
     }
 
 
-
     @Test
     @DisplayName("El jugador debe tener un nombre")
-    void verificarQueJugadorTengaNombre(){
+    void verificarQueJugadorTengaNombre() {
         boolean tieneNombre = jugador.getNombre().isEmpty(); //si es true, quiere decir que nombre esta vacio
         assertFalse(tieneNombre);
     }
+
+    @Test
+    @DisplayName("El mazo debe tener 52 cartas")
+    void verificarQueELMazoTiene52Cartas(){
+        assertEquals(52, mazo.getMazo().size());
+    }
+
+
 
 }
