@@ -112,6 +112,19 @@ class BlackjackTest {
 
     }
 
+    @Test
+    @DisplayName("Cuando un jugador pide una carta, la mano deberia incrementar en 1 su longitud")
+    void verificarQueLaManoIncrementaCuandoElJugadorPideUnaCarta(){
+        int longitudDeManoAntesDePedir = participante.getMano().getCartas().size();
+
+        participante.pedirCarta(mazo.getMazo().pop());
+
+        int longitudDeManoDespuesDePedir = participante.getMano().getCartas().size();
+        System.out.println(participante.getMano());
+
+        assertTrue(longitudDeManoDespuesDePedir > longitudDeManoAntesDePedir);
+    }
+
 
 
 

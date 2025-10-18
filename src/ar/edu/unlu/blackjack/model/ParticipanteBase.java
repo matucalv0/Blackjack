@@ -13,6 +13,10 @@ public abstract class ParticipanteBase {
         this.mano = mano;
     }
 
+    public Mano getMano(){
+        return mano;
+    }
+
     public void pedirCarta(Carta carta){
         mano.addCarta(carta);
     }

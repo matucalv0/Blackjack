@@ -10,4 +10,14 @@ public class Mano {
         cartas.add(carta);
     }
 
+    public Set<Carta> getCartas(){
+        return cartas;
+    }
+
+    @Override
+    public String toString() {
+        return "Mano{" +
+                "cartas=" + cartas +
+                '}';
+    }
 }
