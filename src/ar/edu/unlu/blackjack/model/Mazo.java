@@ -20,6 +20,10 @@ public class Mazo {
         }
     }
 
+    public Carta repartirCarta(){
+        return mazo.pop();
+    }
+
     public void mezclarMazo(){
         Collections.shuffle(mazo);
     }

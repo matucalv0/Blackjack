@@ -5,12 +5,13 @@ public abstract class ParticipanteBase {
     Integer puntaje;
 
 
-    public ParticipanteBase(Mano mano){
-        this.mano = mano;
+    public ParticipanteBase(){
+        this.mano = new Mano();
     }
 
-    public void setMano(Mano mano){
-        this.mano = mano;
+
+    public void agregarCarta(Carta carta){
+        mano.addCarta(carta);
     }
 
     public Mano getMano(){
@@ -20,6 +21,7 @@ public abstract class ParticipanteBase {
     public void pedirCarta(Carta carta){
         mano.addCarta(carta);
     }
+
 
     public void plantarse(){
 

@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Carta {
     Palo palo;
     int numero;
+    private boolean esVisible = true;
 
     public Carta(){
 
@@ -13,6 +14,14 @@ public class Carta {
     public Carta(int numero, Palo palo){
         this.numero = numero;
         this.palo = palo;
+    }
+
+    public void ocultar(){
+        this.esVisible = false;
+    }
+
+    public void revelar(){
+        this.esVisible = true;
     }
 
     @Override

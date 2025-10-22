@@ -1,7 +1,7 @@
 package ar.edu.unlu.blackjack.model;
 
 public class Bankroll {
-    private Double dinero;
+    private double dinero;
 
 
 
@@ -12,6 +12,10 @@ public class Bankroll {
 
     public void agregarDinero(double dinero){
         this.dinero += dinero;
+    }
+
+    public void restarDinero(double dinero){
+        this.dinero -= dinero;
     }
 
 }

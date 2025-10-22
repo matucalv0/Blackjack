@@ -2,6 +2,9 @@ package ar.edu.unlu.tests;
 
 
 import ar.edu.unlu.blackjack.model.*;
+import ar.edu.unlu.model.excepciones.ApuestaMayorAlSaldoExcepcion;
+import ar.edu.unlu.model.excepciones.PartidaSinApuestasExcepcion;
+import ar.edu.unlu.model.excepciones.PartidaSinJugadoresExcepcion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +26,7 @@ class BlackjackTest {
     private Bankroll banca;
     private Crupier crupier;
     private Participante participante;
+    private Mesa mesa;
 
 
     @BeforeEach
@@ -31,7 +35,8 @@ class BlackjackTest {
         carta = new Carta();
         mazo = new Mazo();
         mano = new Mano();
-        participante = new Participante(mano, jugador);
+        participante = new Participante(jugador);
+        mesa = new Mesa();
 
     }
 
@@ -124,6 +129,70 @@ class BlackjackTest {
 
         assertTrue(longitudDeManoDespuesDePedir > longitudDeManoAntesDePedir);
     }
+
+    @Test
+    @DisplayName("Cuando se crea una mesa, esta debe tener como minimo un Crupier y un Mazo")
+    void verificarExistenciaDeCrupierYmazoCuandoSeCreaUnaMesa(){
+
+        assertTrue(mesa.getCrupier() != null && mesa.getMazo() != null);
+    }
+
+    @Test
+    @DisplayName("Cuando se une un jugador a la partida, deberia incrementar en 1 la lista de jugadores")
+    void verificarListaDeJugadoresCuandoUnoSeUne(){
+        int numeroJugadores = mesa.getListaParticipantes().size();
+
+        mesa.jugadorSeUne(jugador);
+
+        int numeroJugadoresDespuesDeAgregarAuno = mesa.getListaParticipantes().size();
+
+        assertTrue(numeroJugadoresDespuesDeAgregarAuno > numeroJugadores);
+
+    }
+
+    @Test
+    @DisplayName("Si no hay jugadores, lanza una excepcion")
+    void verificarQueLanzaExcepcionSiNoHayJugadores(){
+
+
+        Mesa mesa1 = new Mesa(); // mesa sin jugadores
+
+        assertThrows(PartidaSinJugadoresExcepcion.class, () -> {mesa.iniciarPartida();});
+
+
+    }
+
+    @Test
+    @DisplayName("Si ningun participante realizo una apuesta, no se puede iniciar la partida")
+    void verificarExcepcionSiNingunJugadorRealizoApuestas() {
+        mesa.jugadorSeUne(jugador);
+
+        assertThrows(PartidaSinApuestasExcepcion.class, () -> {mesa.iniciarPartida();});
+
+
+    }
+
+    @Test
+    @DisplayName("Cuando se inicia una partida en una determinada mesa, cada jugador recibe 2 cartas")
+    void verificarQueCuandoSeIniciaUnaPartidaCadaJugadorRecibaDosCartas() throws PartidaSinJugadoresExcepcion, PartidaSinApuestasExcepcion {
+        Jugador jugador1 = new Jugador("Eduardo");
+        Jugador jugador2 = new Jugador("Carlos");
+
+        mesa.jugadorSeUne(jugador);
+        mesa.jugadorSeUne(jugador1);
+        mesa.jugadorSeUne(jugador2);   //se unen 3 jugadores
+
+        mesa.iniciarPartida();   //inicio la partida
+
+        assertEquals(2, mesa.getListaParticipantes().getFirst().getMano().cantidadCartas());
+        assertEquals(2, mesa.getListaParticipantes().get(1).getMano().cantidadCartas());
+        assertEquals(2, mesa.getListaParticipantes().get(2).getMano().cantidadCartas());
+        //verifico que cada jugador tenga 2 cartas
+
+
+    }
+
+
 
 
 

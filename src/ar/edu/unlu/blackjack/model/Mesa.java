@@ -1,19 +1,64 @@
 package ar.edu.unlu.blackjack.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import ar.edu.unlu.model.excepciones.PartidaSinApuestasExcepcion;
+import ar.edu.unlu.model.excepciones.PartidaSinJugadoresExcepcion;
+
+import java.util.*;
 
 public class Mesa {
-    Set<Participante> participantes = new HashSet<>();
+    ArrayList<Participante> participantes = new ArrayList<>();
     Crupier crupier;
     Mazo mazo;
 
-    public Mesa(Crupier crupier, Mazo mazo){
-        this.crupier = crupier;
-        this.mazo = mazo;
+    public Mesa(){
+        this.crupier = new Crupier();
+        this.mazo = new Mazo();
     }
 
-    public void agregarParticipante(Participante participante){
-        participantes.add(participante);
+    public void jugadorSeUne(Jugador jugador){
+        participantes.add(new Participante(jugador));
+    }
+
+
+    public void iniciarPartida() throws PartidaSinJugadoresExcepcion, PartidaSinApuestasExcepcion {
+
+            if (participantes.isEmpty()){
+                throw new PartidaSinJugadoresExcepcion("Debe haber al menos un jugador en la mesa");
+            }
+
+
+
+            if (participantes.stream().noneMatch(participante -> participante.isApuesta)){
+                throw new PartidaSinApuestasExcepcion("Al menos un jugador debe realizar una apuesta");
+            }
+
+            crupier.agregarCarta(mazo.repartirCarta());
+
+            for (Participante participante : participantes) {
+                if (participante.isApuesta){
+                    participante.agregarCarta(mazo.repartirCarta());
+                }
+            }
+
+            crupier.agregarCarta(mazo.repartirCarta());
+
+            for (Participante participante : participantes) {
+                if (participante.isApuesta){
+                    participante.agregarCarta(mazo.repartirCarta());
+                }
+            }
+
+    }
+
+    public ArrayList<Participante> getListaParticipantes(){
+        return participantes;
+    }
+
+    public Crupier getCrupier() {
+        return crupier;
+    }
+
+    public Mazo getMazo() {
+        return mazo;
     }
 }
