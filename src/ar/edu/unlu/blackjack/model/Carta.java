@@ -3,8 +3,8 @@ package ar.edu.unlu.blackjack.model;
 import java.util.Objects;
 
 public class Carta {
-    Palo palo;
-    int numero;
+    private Palo palo;
+    private int numero;
     private boolean esVisible = true;
 
     public Carta(){
@@ -22,6 +22,10 @@ public class Carta {
 
     public void revelar(){
         this.esVisible = true;
+    }
+
+    public int getnumero(){
+        return numero;
     }
 
     @Override

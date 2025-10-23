@@ -18,12 +18,26 @@ public class Mano {
         return cartas;
     }
 
+    public int puntaje(){
+        int p = 0;
+
+        for (Carta carta: cartas){
+            p += carta.getnumero();
+        }
+
+        return p;
+    }
+
     public int cantidadCartas(){
         return cartas.size();
     }
 
     public void resetMano(){
         cartas.clear();
+    }
+
+    public boolean compararMano(Mano mano){
+        return this.puntaje() > mano.puntaje();
     }
 
     @Override

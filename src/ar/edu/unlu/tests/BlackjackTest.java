@@ -2,9 +2,7 @@ package ar.edu.unlu.tests;
 
 
 import ar.edu.unlu.blackjack.model.*;
-import ar.edu.unlu.model.excepciones.ApuestaMayorAlSaldoExcepcion;
-import ar.edu.unlu.model.excepciones.PartidaSinApuestasExcepcion;
-import ar.edu.unlu.model.excepciones.PartidaSinJugadoresExcepcion;
+import ar.edu.unlu.model.excepciones.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +24,7 @@ class BlackjackTest {
     private Bankroll banca;
     private Crupier crupier;
     private Participante participante;
-    private Mesa mesa;
+    private Partida partida;
 
 
     @BeforeEach
@@ -36,7 +34,7 @@ class BlackjackTest {
         mazo = new Mazo();
         mano = new Mano();
         participante = new Participante(jugador);
-        mesa = new Mesa();
+        partida = new Partida();
 
     }
 
@@ -119,12 +117,12 @@ class BlackjackTest {
 
     @Test
     @DisplayName("Cuando un jugador pide una carta, la mano deberia incrementar en 1 su longitud")
-    void verificarQueLaManoIncrementaCuandoElJugadorPideUnaCarta(){
-        int longitudDeManoAntesDePedir = participante.getMano().getCartas().size();
+    void verificarQueLaManoIncrementaCuandoElJugadorPideUnaCarta() throws PuntajeMayorA21Excepcion {
+        int longitudDeManoAntesDePedir = participante.getMano().cantidadCartas();
 
-        participante.pedirCarta(mazo.getMazo().pop());
+        participante.pedirCarta(mazo.repartirCarta());
 
-        int longitudDeManoDespuesDePedir = participante.getMano().getCartas().size();
+        int longitudDeManoDespuesDePedir = participante.getMano().cantidadCartas();
         System.out.println(participante.getMano());
 
         assertTrue(longitudDeManoDespuesDePedir > longitudDeManoAntesDePedir);
@@ -134,17 +132,17 @@ class BlackjackTest {
     @DisplayName("Cuando se crea una mesa, esta debe tener como minimo un Crupier y un Mazo")
     void verificarExistenciaDeCrupierYmazoCuandoSeCreaUnaMesa(){
 
-        assertTrue(mesa.getCrupier() != null && mesa.getMazo() != null);
+        assertTrue(partida.getCrupier() != null && partida.getMazo() != null);
     }
 
     @Test
     @DisplayName("Cuando se une un jugador a la partida, deberia incrementar en 1 la lista de jugadores")
     void verificarListaDeJugadoresCuandoUnoSeUne(){
-        int numeroJugadores = mesa.getListaParticipantes().size();
+        int numeroJugadores = partida.getListaParticipantes().size();
 
-        mesa.jugadorSeUne(jugador);
+        partida.jugadorSeUne(jugador);
 
-        int numeroJugadoresDespuesDeAgregarAuno = mesa.getListaParticipantes().size();
+        int numeroJugadoresDespuesDeAgregarAuno = partida.getListaParticipantes().size();
 
         assertTrue(numeroJugadoresDespuesDeAgregarAuno > numeroJugadores);
 
@@ -155,9 +153,10 @@ class BlackjackTest {
     void verificarQueLanzaExcepcionSiNoHayJugadores(){
 
 
-        Mesa mesa1 = new Mesa(); // mesa sin jugadores
+        Partida partida1 = new Partida(); // mesa sin jugadores
 
-        assertThrows(PartidaSinJugadoresExcepcion.class, () -> {mesa.iniciarPartida();});
+        assertThrows(PartidaSinJugadoresExcepcion.class, () -> {
+            partida.iniciarPartida();});
 
 
     }
@@ -165,32 +164,39 @@ class BlackjackTest {
     @Test
     @DisplayName("Si ningun participante realizo una apuesta, no se puede iniciar la partida")
     void verificarExcepcionSiNingunJugadorRealizoApuestas() {
-        mesa.jugadorSeUne(jugador);
+        partida.jugadorSeUne(jugador);
 
-        assertThrows(PartidaSinApuestasExcepcion.class, () -> {mesa.iniciarPartida();});
+        assertThrows(PartidaSinApuestasExcepcion.class, () -> {
+            partida.iniciarPartida();});
 
 
     }
 
     @Test
     @DisplayName("Cuando se inicia una partida en una determinada mesa, cada jugador recibe 2 cartas")
-    void verificarQueCuandoSeIniciaUnaPartidaCadaJugadorRecibaDosCartas() throws PartidaSinJugadoresExcepcion, PartidaSinApuestasExcepcion {
+    void verificarQueCuandoSeIniciaUnaPartidaCadaJugadorRecibaDosCartas() throws PartidaSinJugadoresExcepcion, PartidaSinApuestasExcepcion, ApuestaMayorAlSaldoExcepcion, RondaVaciaExcepcion {
         Jugador jugador1 = new Jugador("Eduardo");
         Jugador jugador2 = new Jugador("Carlos");
 
-        mesa.jugadorSeUne(jugador);
-        mesa.jugadorSeUne(jugador1);
-        mesa.jugadorSeUne(jugador2);   //se unen 3 jugadores
+        partida.jugadorSeUne(jugador);
+        partida.jugadorSeUne(jugador1);
+        partida.jugadorSeUne(jugador2);//se unen 3 jugadores
 
-        mesa.iniciarPartida();   //inicio la partida
+        jugador.getBanca().agregarDinero(200);
 
-        assertEquals(2, mesa.getListaParticipantes().getFirst().getMano().cantidadCartas());
-        assertEquals(2, mesa.getListaParticipantes().get(1).getMano().cantidadCartas());
-        assertEquals(2, mesa.getListaParticipantes().get(2).getMano().cantidadCartas());
+        partida.recibirApuesta(partida.getListaParticipantes().getFirst(), 100);
+
+
+
+        partida.iniciarPartida();   //inicio la partida
+
+        assertEquals(2, partida.getListaParticipantes().getFirst().getMano().cantidadCartas());
+
         //verifico que cada jugador tenga 2 cartas
 
-
     }
+
+
 
 
 

@@ -1,38 +1,47 @@
 package ar.edu.unlu.blackjack.model;
 
-import ar.edu.unlu.model.excepciones.ApuestaMayorAlSaldoExcepcion;
-import ar.edu.unlu.model.excepciones.PartidaSinJugadoresExcepcion;
+import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
 
-public class Participante extends ParticipanteBase implements IParticipante {
+public class Participante extends ParticipanteBase  {
     Jugador jugador;
-    boolean isApuesta = false;
+    private Apuesta apuesta;
 
 
     public Participante(Jugador jugador) {
         this.jugador = jugador;
+        apuesta = new Apuesta();
+    }
+
+    public double getSaldoJugador(){
+        return jugador.getSaldo();
     }
 
 
-    @Override
     public void dividir() {
 
     }
 
-    @Override
     public void doblar() {
 
     }
 
+
     @Override
-    public void realizarApuesta(double apuesta) throws ApuestaMayorAlSaldoExcepcion{
-        if (Double.compare(apuesta, jugador.getSaldo()) > 0){
-            throw new ApuestaMayorAlSaldoExcepcion("Saldo insuficiente");
+    public void pedirCarta(Carta carta) throws PuntajeMayorA21Excepcion {
+        if (this.puntajeActual() > 21){
+            throw new PuntajeMayorA21Excepcion("Su puntaje es mayor a 21, no puede pedir mas cartas");
         }
 
-        jugador.getBanca().restarDinero(apuesta);
-        isApuesta = true;
+        mano.addCarta(carta);
+    }
 
 
+    public void setApuesta(double monto){
+        this.apuesta.setMonto(monto);
+    }
+
+    public void restarBanca(double n){
+        jugador.getBanca().restarDinero(n);
     }
 
 }
