@@ -41,6 +41,7 @@ public class Mano {
     }
 
     public boolean verificarBlackjack(){
+        return false;
 
     }
 
