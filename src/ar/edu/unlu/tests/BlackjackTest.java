@@ -162,7 +162,7 @@ class BlackjackTest {
     }
 
     @Test
-    @DisplayName("Si ningun participante realizo una apuesta, no se puede iniciar la partida")
+    @DisplayName("Si ningun participante realizo una apuesta, no se puede iniciar la ronda")
     void verificarExcepcionSiNingunJugadorRealizoApuestas() {
         partida.jugadorSeUne(jugador);
 
@@ -193,6 +193,20 @@ class BlackjackTest {
         assertEquals(2, partida.getListaParticipantes().getFirst().getMano().cantidadCartas());
 
         //verifico que cada jugador tenga 2 cartas
+
+    }
+
+
+    @Test
+    @DisplayName("Si la mano de un jugador se pasa de 21 pero tiene un As, este mismo debe actuar como un 1 (restar 10)")
+    void verificarQueElAsActuaComo1SiLaManoSePasaDe21() throws PuntajeMayorA21Excepcion {
+        participante.pedirCarta(new Carta(1, Palo.CORAZON));
+        participante.pedirCarta(new Carta(9, Palo.CORAZON));
+        participante.pedirCarta(new Carta(11, Palo.CORAZON));
+        participante.pedirCarta(new Carta(1,Palo.TREBOL));
+
+        assertEquals(21, participante.puntajeActual());
+
 
     }
 

@@ -20,12 +20,28 @@ public class Mano {
 
     public int puntaje(){
         int p = 0;
+        int cantidadAses = 0;
 
         for (Carta carta: cartas){
-            p += carta.getnumero();
+            if (carta.getValor().equals("A")){
+                cantidadAses++;
+            }
+            p += carta.getNumero();
         }
 
+
+        while (p > 21 && cantidadAses > 0){
+            p -= 10;
+            cantidadAses--;
+        }
+
+
+
         return p;
+    }
+
+    public boolean verificarBlackjack(){
+
     }
 
     public int cantidadCartas(){
