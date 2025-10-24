@@ -10,4 +10,6 @@ public class Apuesta {
     public void setMonto(double monto) {
         this.monto = monto;
     }
+
+
 }

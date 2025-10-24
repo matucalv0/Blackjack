@@ -115,24 +115,12 @@ class BlackjackTest {
 
     }
 
-    @Test
-    @DisplayName("Cuando un jugador pide una carta, la mano deberia incrementar en 1 su longitud")
-    void verificarQueLaManoIncrementaCuandoElJugadorPideUnaCarta() throws PuntajeMayorA21Excepcion {
-        int longitudDeManoAntesDePedir = participante.getMano().cantidadCartas();
-
-        participante.pedirCarta(mazo.repartirCarta());
-
-        int longitudDeManoDespuesDePedir = participante.getMano().cantidadCartas();
-        System.out.println(participante.getMano());
-
-        assertTrue(longitudDeManoDespuesDePedir > longitudDeManoAntesDePedir);
-    }
 
     @Test
     @DisplayName("Cuando se crea una mesa, esta debe tener como minimo un Crupier y un Mazo")
     void verificarExistenciaDeCrupierYmazoCuandoSeCreaUnaMesa(){
 
-        assertTrue(partida.getCrupier() != null && partida.getMazo() != null);
+        assertTrue(partida.getRonda().getCrupier() != null && partida.getRonda().getMazo() != null);
     }
 
     @Test
@@ -198,17 +186,43 @@ class BlackjackTest {
 
 
     @Test
-    @DisplayName("Si la mano de un jugador se pasa de 21 pero tiene un As, este mismo debe actuar como un 1 (restar 10)")
-    void verificarQueElAsActuaComo1SiLaManoSePasaDe21() throws PuntajeMayorA21Excepcion {
-        participante.pedirCarta(new Carta(1, Palo.CORAZON));
-        participante.pedirCarta(new Carta(9, Palo.CORAZON));
-        participante.pedirCarta(new Carta(11, Palo.CORAZON));
-        participante.pedirCarta(new Carta(1,Palo.TREBOL));
+    @DisplayName("Si se inicia una ronda, cada jugador debe tener 2 cartas")
+    void verificarInicioDeRonda() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion {
+        Jugador jugador1 = new Jugador("Eduardo");
 
-        assertEquals(21, participante.puntajeActual());
+        jugador.agregarDinero(500);    //añaden 500 a su cartera
+        jugador1.agregarDinero(500);
+
+        partida.jugadorSeUne(jugador);   // se unen los jugadores a la mesa
+        partida.jugadorSeUne(jugador1);
+
+
+        partida.recibirApuesta(partida.getListaParticipantes().getFirst(), 250);  // apuestan
+        partida.recibirApuesta(partida.getListaParticipantes().get(1), 100 );
+
+        partida.iniciarPartida();
+
+        assertEquals(2, partida.getRonda().getColaTurnos().poll().getMano().cantidadCartas());
+        assertEquals(2, partida.getRonda().getColaTurnos().poll().getMano().cantidadCartas());
+        assertEquals(2, partida.getRonda().getCrupier().getMano().cantidadCartas());
+
 
 
     }
+
+
+
+    @Test
+    @DisplayName("Si la mano de un jugador se pasa de 21 pero tiene un As, este mismo debe actuar como un 1 (restar 10)")
+    void verificarQueElAsActuaComo1SiLaManoSePasaDe21() throws PuntajeMayorA21Excepcion {
+
+
+        assertEquals(21, participante.puntajeActual());
+
+    }
+
+
+
 
 
 

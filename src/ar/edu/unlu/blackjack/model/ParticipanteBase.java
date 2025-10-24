@@ -3,8 +3,8 @@ package ar.edu.unlu.blackjack.model;
 import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
 
 public abstract class ParticipanteBase {
-    Mano mano;
-    Integer puntaje;
+    protected Mano mano;
+
 
 
     public ParticipanteBase(){
@@ -24,13 +24,8 @@ public abstract class ParticipanteBase {
         return this.mano.puntaje();
     }
 
-    public void pedirCarta(Carta carta) throws PuntajeMayorA21Excepcion {
-        mano.addCarta(carta);
-    }
 
 
-    public void plantarse(){
 
-    }
 
 }

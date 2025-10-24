@@ -8,14 +8,10 @@ import ar.edu.unlu.model.excepciones.RondaVaciaExcepcion;
 import java.util.*;
 
 public class Partida {
-    ArrayList<Participante> participantes = new ArrayList<>();
-    Crupier crupier;
-    Mazo mazo;
-    Ronda ronda;
+    private ArrayList<Participante> participantes = new ArrayList<>();
+    private Ronda ronda;
 
     public Partida(){
-        this.crupier = new Crupier();
-        this.mazo = new Mazo();
         this.ronda = new Ronda();
     }
 
@@ -28,11 +24,11 @@ public class Partida {
             throw new ApuestaMayorAlSaldoExcepcion("Saldo insuficiente");
         }
 
+
         participante.setApuesta(apuesta);
         participante.restarBanca(apuesta);
 
         ronda.agregarJugadorRonda(participante);
-
 
     }
 
@@ -42,20 +38,16 @@ public class Partida {
             throw new PartidaSinJugadoresExcepcion("Debe haber al menos un jugador en la mesa");
         }
 
-        ronda.rondaInicial(crupier, mazo);
+        ronda.rondaInicial();
     }
-
-
 
     public ArrayList<Participante> getListaParticipantes(){
         return participantes;
     }
 
-    public Crupier getCrupier() {
-        return crupier;
+    public Ronda getRonda(){
+        return ronda;
     }
 
-    public Mazo getMazo() {
-        return mazo;
-    }
+
 }

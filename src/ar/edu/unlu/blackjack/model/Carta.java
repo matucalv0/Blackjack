@@ -40,11 +40,11 @@ public class Carta {
         this.esVisible = true;
     }
 
-    public String getValor(){
+    public String getCaracter(){
         return valor;
     }
 
-    public int getNumero(){
+    public int getValor(){
         if (valor.equals("J") || valor.equals("Q") || valor.equals("K")){
             return 10;
         } else if (valor.equals("A")){

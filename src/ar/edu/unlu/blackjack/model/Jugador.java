@@ -14,6 +14,10 @@ public class Jugador  {
         return banca.getDinero();
     }
 
+    public void agregarDinero(double dinero){
+        banca.agregarDinero(dinero);
+    }
+
 
 
     public String getNombre(){

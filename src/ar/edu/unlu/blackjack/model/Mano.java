@@ -1,8 +1,6 @@
 package ar.edu.unlu.blackjack.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Mano {
     ArrayList<Carta> cartas = new ArrayList<>();
@@ -23,12 +21,11 @@ public class Mano {
         int cantidadAses = 0;
 
         for (Carta carta: cartas){
-            if (carta.getValor().equals("A")){
+            if (carta.getCaracter().equals("A")){
                 cantidadAses++;
             }
-            p += carta.getNumero();
+            p += carta.getValor();
         }
-
 
         while (p > 21 && cantidadAses > 0){
             p -= 10;
@@ -40,10 +37,6 @@ public class Mano {
         return p;
     }
 
-    public boolean verificarBlackjack(){
-        return false;
-
-    }
 
     public int cantidadCartas(){
         return cartas.size();
@@ -53,9 +46,11 @@ public class Mano {
         cartas.clear();
     }
 
-    public boolean compararMano(Mano mano){
-        return this.puntaje() > mano.puntaje();
+    public boolean sePaso(){
+        return (puntaje() > 21);
     }
+
+
 
     @Override
     public String toString() {
