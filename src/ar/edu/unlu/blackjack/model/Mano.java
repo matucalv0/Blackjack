@@ -42,6 +42,7 @@ public class Mano {
         return cartas.size();
     }
 
+
     public void resetMano(){
         cartas.clear();
     }

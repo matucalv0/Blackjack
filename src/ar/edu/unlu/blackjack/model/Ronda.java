@@ -29,6 +29,7 @@ public class Ronda {
         }
 
         evaluarGanadores();
+        participantesActivosFinalRonda.clear();
 
     }
 
@@ -46,18 +47,24 @@ public class Ronda {
         if (crupier.getMano().sePaso()){
             for (Participante participante: participantesActivosFinalRonda){
                 pagoNormal(participante);
-                participantesActivosFinalRonda.remove(participante);
+                participante.getApuesta().clearApuesta();
             }
         } else {
-
             for (Participante participante: participantesActivosFinalRonda){
                 if (participante.puntajeActual() > crupier.puntajeActual()){
                     pagoNormal(participante);
-                    participantesActivosFinalRonda.remove(participante);
+                } else if (participante.puntajeActual() == crupier.puntajeActual()){
+                    devolverDinero(participante);
                 }
+                participante.getApuesta().clearApuesta();
             }
         }
 
+    }
+
+
+    public void devolverDinero(Participante participante){
+        participante.sumarBanca(participante.getApuesta().getMonto());
     }
 
     public void pagoNormal(Participante participante){
@@ -66,13 +73,15 @@ public class Ronda {
     }
 
     public void verificarBlackjack(){
+        ArrayList<Participante> jugadoresConBlackjack = new ArrayList<>();
         for (Participante participante: colaTurnos){
             if (participante.puntajeActual() == 21){
                 double pagoApuesta = (participante.getApuesta().getMonto()) * 2.5;
                 participante.sumarBanca(pagoApuesta);
-                colaTurnos.remove(participante);
+                participante.getApuesta().clearApuesta();
             }
         }
+
 
     }
 

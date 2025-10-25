@@ -11,5 +11,9 @@ public class Apuesta {
         this.monto = monto;
     }
 
+    public void clearApuesta(){
+        monto = 0;
+    }
+
 
 }

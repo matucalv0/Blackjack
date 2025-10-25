@@ -1,8 +1,6 @@
 package ar.edu.unlu.blackjack.model;
 
-import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
-
-public class Participante extends ParticipanteBase  {
+public class Participante extends ParticipanteBase {
     private Jugador jugador;
     private Apuesta apuesta;
 
@@ -12,11 +10,11 @@ public class Participante extends ParticipanteBase  {
         apuesta = new Apuesta();
     }
 
-    public double getSaldoJugador(){
+    public double getSaldoJugador() {
         return jugador.getSaldo();
     }
 
-    public void sumarBanca(double dinero){
+    public void sumarBanca(double dinero) {
         jugador.agregarDinero(dinero);
     }
 
@@ -29,15 +27,17 @@ public class Participante extends ParticipanteBase  {
 
     }
 
-    public Apuesta getApuesta(){
+
+
+    public Apuesta getApuesta() {
         return apuesta;
     }
 
-    public void setApuesta(double monto){
+    public void setApuesta(double monto) {
         this.apuesta.setMonto(monto);
     }
 
-    public void restarBanca(double n){
+    public void restarBanca(double n) {
         jugador.getBanca().restarDinero(n);
     }
 

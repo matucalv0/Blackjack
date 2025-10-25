@@ -10,9 +10,9 @@ public class Crupier extends ParticipanteBase {
     public void agregarCarta(Carta carta) {
         if (mano.cantidadCartas() == 1){
             carta.ocultar();
-            mano.addCarta(carta);
+            super.agregarCarta(carta);
         } else {
-            mano.addCarta(carta);
+            super.agregarCarta(carta);
         }
     }
 

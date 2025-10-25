@@ -5,8 +5,6 @@ import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
 public abstract class ParticipanteBase {
     protected Mano mano;
 
-
-
     public ParticipanteBase(){
         this.mano = new Mano();
     }
@@ -16,16 +14,15 @@ public abstract class ParticipanteBase {
         mano.addCarta(carta);
     }
 
+
     public Mano getMano(){
         return mano;
     }
+    
 
     public int puntajeActual(){
         return this.mano.puntaje();
     }
-
-
-
 
 
 }
