@@ -38,6 +38,14 @@ class BlackjackTest {
 
     }
 
+    private Jugador crearJugador(String nombre, double dinero){
+        Jugador jugador = new Jugador(nombre);
+        jugador.agregarDinero(dinero);
+        return jugador;
+    }
+
+
+
 
     @Test
     @DisplayName("El jugador debe tener un nombre")
@@ -325,7 +333,8 @@ class BlackjackTest {
         partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
         partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.PICAS));
 
-        partida.getRonda().verificarBlackjack();
+        partida.getRonda().participanteSePlanta();
+
         partida.getRonda().finDeRonda();
 
         assertEquals(1625, jugador1.getSaldo());
@@ -359,6 +368,42 @@ class BlackjackTest {
         partida.getRonda().finDeRonda();  // todos los jugadores que no hayan hecho blackjack deben perder
 
         assertEquals(500, jugador1.getSaldo());
+
+    }
+
+    @Test
+    @DisplayName("Simular escenario: Dos jugadores con blackjack")
+    void simularEscenarioDosJugadoresConBlackjack() throws ApuestaMayorAlSaldoExcepcion {
+        Jugador jugador1 = crearJugador("Eduardo", 1000);
+        Jugador jugador2 = crearJugador("Carlos", 1000);
+
+        partida.jugadorSeUne(jugador1);
+        partida.jugadorSeUne(jugador2);
+
+        partida.recibirApuesta(partida.getListaParticipantes().getFirst(), 500);
+        partida.recibirApuesta(partida.getListaParticipantes().get(1), 500);
+
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(1, Palo.CORAZON));
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.CORAZON));
+
+        partida.getListaParticipantes().get(1).agregarCarta(new Carta(1, Palo.DIAMANTE));
+        partida.getListaParticipantes().get(1).agregarCarta(new Carta(10, Palo.DIAMANTE));
+
+
+
+
+        partida.getRonda().participanteSePlanta();
+        partida.getRonda().participanteSePlanta();
+
+        partida.getRonda().finDeRonda();
+
+        assertEquals(1625, jugador1.getSaldo());
+        assertEquals(1625, jugador2.getSaldo());
+
+
+
+
+
 
     }
 

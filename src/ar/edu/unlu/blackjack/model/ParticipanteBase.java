@@ -14,6 +14,10 @@ public abstract class ParticipanteBase {
         mano.addCarta(carta);
     }
 
+    public int cantidadCartasEnMano(){
+        return mano.cantidadCartas();
+    }
+
 
     public Mano getMano(){
         return mano;
