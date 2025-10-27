@@ -206,8 +206,6 @@ class BlackjackTest {
         assertEquals(2, partida.getRonda().getColaTurnos().poll().getMano().cantidadCartas());
         assertEquals(2, partida.getRonda().getCrupier().getMano().cantidadCartas());
 
-
-
     }
 
 
@@ -215,11 +213,158 @@ class BlackjackTest {
     @Test
     @DisplayName("Si la mano de un jugador se pasa de 21 pero tiene un As, este mismo debe actuar como un 1 (restar 10)")
     void verificarQueElAsActuaComo1SiLaManoSePasaDe21() throws PuntajeMayorA21Excepcion {
+        participante.agregarCarta(new Carta(1 , Palo.TREBOL ));
+        participante.agregarCarta(new Carta(5, Palo.PICAS));
+        participante.agregarCarta(new Carta(10, Palo.CORAZON)); // se pasa de 21, el puntaje = 26. Pero como tiene un As, puntaje = 16
 
 
-        assertEquals(21, participante.puntajeActual());
+
+        assertEquals(16, participante.puntajeActual());
 
     }
+
+    @Test
+    @DisplayName("Si el jugador le gana al crupier, se le paga la apuesta")
+    void verificarQueIncrementaElSaldoDelJugadorGanador() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
+        Jugador jugador1 = new Jugador("Eduardo");
+
+
+        partida.jugadorSeUne(jugador1);
+
+
+        jugador1.getBanca().agregarDinero(1000);
+
+        partida.recibirApuesta(partida.getListaParticipantes().getFirst(), 500);
+
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.DIAMANTE));
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.TREBOL));
+
+        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
+        partida.getRonda().getCrupier().agregarCarta(new Carta(5, Palo.CORAZON));
+
+        partida.getRonda().getParticipantesActivosFinalRonda().add(partida.getListaParticipantes().getFirst()); //agrego el participante para que el metodo evaluarGanadores funcione
+
+        partida.getRonda().evaluarGanadores();  // el jugador gano, asi que su saldo debe haber incrementado a 1500.
+
+        assertEquals(1500, jugador1.getSaldo());
+
+    }
+
+
+    @Test
+    @DisplayName("Si el jugador pierde se le resta su apuesta al saldo")
+    void verificarQueDecrementaElSaldoDelJugadorPerdedor() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
+        Jugador jugador1 = new Jugador("Eduardo");
+
+
+        partida.jugadorSeUne(jugador1);
+
+
+        jugador1.getBanca().agregarDinero(1000);
+
+        partida.recibirApuesta(partida.getListaParticipantes().getFirst(), 500);
+
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.DIAMANTE));
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.TREBOL));
+
+        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
+        partida.getRonda().getCrupier().agregarCarta(new Carta(1, Palo.CORAZON));
+
+        partida.getRonda().getParticipantesActivosFinalRonda().add(partida.getListaParticipantes().getFirst()); //agrego el participante para que el metodo evaluarGanadores funcione
+
+        partida.getRonda().evaluarGanadores();  // el jugador perdio, su saldo queda igual. Es decir saldo previo a la apuesta - apuesta.
+
+        assertEquals(500, jugador1.getSaldo());
+
+    }
+
+
+    @Test
+    @DisplayName("Si el jugador le empata al crupier, se devuelve la apuesta")
+    void verificarQueElSaldoNoSeModificaDelJugadorQueEmpato() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
+        Jugador jugador1 = new Jugador("Eduardo");
+
+
+        partida.jugadorSeUne(jugador1);
+
+
+        jugador1.getBanca().agregarDinero(1000);
+
+        partida.recibirApuesta(partida.getListaParticipantes().getFirst(), 500);
+
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.DIAMANTE));
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.TREBOL));
+
+        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
+        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.PICAS));
+
+        partida.getRonda().getParticipantesActivosFinalRonda().add(partida.getListaParticipantes().getFirst()); //agrego el participante para que el metodo evaluarGanadores funcione
+
+        partida.getRonda().evaluarGanadores();  // el jugador empato, se le devuelve la apuesta.
+
+        assertEquals(1000, jugador1.getSaldo());
+
+    }
+
+    @Test
+    @DisplayName("SI el jugador hace blackjack, automaticamente no participa mas de la ronda y se le paga por 2.25 la apuesta realizada")
+    void verificarQueSiUnJugadorHaceBlackjackSeLePagaMasySaleDeLaRonda() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion {
+        Jugador jugador1 = new Jugador("Eduardo");
+
+
+        partida.jugadorSeUne(jugador1);
+
+
+        jugador1.getBanca().agregarDinero(1000);
+
+        partida.recibirApuesta(partida.getListaParticipantes().getFirst(), 500);
+
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(1, Palo.DIAMANTE));
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.TREBOL));
+
+        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
+        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.PICAS));
+
+        partida.getRonda().verificarBlackjack();
+
+        assertEquals(1750, jugador1.getSaldo());
+        assertEquals(0, partida.getRonda().getColaTurnos().size());
+
+    }
+
+
+    @Test
+    @DisplayName("Si el jugador tiene 21, pero la banca hizo blackjack, gana la banca")
+    void verificarQueGanaLaBancaSiHaceBlackjackYAmbosTienen21() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
+        Jugador jugador1 = new Jugador("Eduardo");
+
+
+        partida.jugadorSeUne(jugador1);
+
+
+        jugador1.getBanca().agregarDinero(1000);
+
+        partida.recibirApuesta(partida.getListaParticipantes().getFirst(), 500);
+
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.DIAMANTE));
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(10, Palo.TREBOL));
+        partida.getListaParticipantes().getFirst().agregarCarta(new Carta(1, Palo.TREBOL));  //21, no blackjack
+
+        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));  //blackjack
+        partida.getRonda().getCrupier().agregarCarta(new Carta(1, Palo.PICAS));
+
+        partida.getRonda().getParticipantesActivosFinalRonda().add(partida.getListaParticipantes().getFirst()); //agrego el participante para que el metodo evaluarGanadores funcione
+
+        partida.getRonda().finDeRonda();  // todos los jugadores que no hayan hecho blackjack deben perder
+
+        assertEquals(500, jugador1.getSaldo());
+
+    }
+
+
+
+
+
 
 
 

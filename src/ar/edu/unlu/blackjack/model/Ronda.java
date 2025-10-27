@@ -10,6 +10,7 @@ import java.util.Queue;
 public class Ronda {
     private Queue<Participante> colaTurnos = new LinkedList<>();
     private ArrayList<Participante> participantesActivosFinalRonda = new ArrayList<>();
+    private ArrayList<Participante> jugadoresConBlackjack = new ArrayList<>();
     private Mazo mazo;
     private Crupier crupier;
 
@@ -23,13 +24,32 @@ public class Ronda {
         colaTurnos.add(jugadorRonda);
     }
 
+
     public void finDeRonda(){
-        while (crupier.puntajeActual() < 17){
-            crupier.agregarCarta(mazo.repartirCarta());
+        if (crupier.puntajeActual() == 21){   //hizo blackjack
+            for (Participante participante: jugadoresConBlackjack){  //empate
+                devolverDinero(participante);
+            }
+            participantesActivosFinalRonda.clear();
+            jugadoresConBlackjack.clear();
+        } else {
+
+            for (Participante participante: jugadoresConBlackjack){  //pago a jugadores con blackjack
+                pagoBlackjack(participante);
+                jugadoresConBlackjack.clear();
+            }
+
+            while (crupier.puntajeActual() < 17){
+                crupier.agregarCarta(mazo.repartirCarta());
+            }
+
+            evaluarGanadores();
+            participantesActivosFinalRonda.clear();
+
         }
 
-        evaluarGanadores();
-        participantesActivosFinalRonda.clear();
+
+
 
     }
 
@@ -40,6 +60,11 @@ public class Ronda {
         }
 
         participante.agregarCarta(mazo.repartirCarta());
+
+        if (participante.getMano().sePaso()){
+            colaTurnos.remove(participante);
+            System.out.println("El jugador " + participante + "se paso");
+        }
 
     }
 
@@ -72,21 +97,23 @@ public class Ronda {
         participante.sumarBanca(pagoApuesta);
     }
 
+    public void pagoBlackjack(Participante participante){
+        double pagoApuesta = (participante.getApuesta().getMonto()) * 2.25;
+        participante.sumarBanca(pagoApuesta);
+    }
+
     public void verificarBlackjack(){
-        ArrayList<Participante> jugadoresConBlackjack = new ArrayList<>();
         for (Participante participante: colaTurnos){
             if (participante.puntajeActual() == 21){
-                double pagoApuesta = (participante.getApuesta().getMonto()) * 2.5;
-                participante.sumarBanca(pagoApuesta);
-                participante.getApuesta().clearApuesta();
+                jugadoresConBlackjack.add(participante);
             }
         }
 
+        for (Participante participante: jugadoresConBlackjack){    //los jugadores que realizan blackjack pasan directamente al final de la ronda
+            colaTurnos.remove(participante);
+        }
 
     }
-
-
-
 
 
     public void participanteSePlanta(){
@@ -98,7 +125,9 @@ public class Ronda {
     }
 
 
-
+    public ArrayList<Participante> getParticipantesActivosFinalRonda() {
+        return participantesActivosFinalRonda;
+    }
 
     public void rondaInicial() throws RondaVaciaExcepcion {
         if (colaTurnos.isEmpty()){

@@ -8,6 +8,7 @@ public class Mazo {
 
     public Mazo(){
         generarMazo();
+        mezclarMazo();
     }
 
     public void generarMazo() {
