@@ -307,7 +307,7 @@ class BlackjackTest {
     }
 
     @Test
-    @DisplayName("SI el jugador hace blackjack, automaticamente no participa mas de la ronda y se le paga por 2.25 la apuesta realizada")
+    @DisplayName("SI el jugador hace blackjack, automaticamente no participa mas de la ronda")
     void verificarQueSiUnJugadorHaceBlackjackSeLePagaMasySaleDeLaRonda() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion {
         Jugador jugador1 = new Jugador("Eduardo");
 
@@ -326,8 +326,9 @@ class BlackjackTest {
         partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.PICAS));
 
         partida.getRonda().verificarBlackjack();
+        partida.getRonda().finDeRonda();
 
-        assertEquals(1750, jugador1.getSaldo());
+        assertEquals(1625, jugador1.getSaldo());
         assertEquals(0, partida.getRonda().getColaTurnos().size());
 
     }

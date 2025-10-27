@@ -36,8 +36,8 @@ public class Ronda {
 
             for (Participante participante: jugadoresConBlackjack){  //pago a jugadores con blackjack
                 pagoBlackjack(participante);
-                jugadoresConBlackjack.clear();
             }
+
 
             while (crupier.puntajeActual() < 17){
                 crupier.agregarCarta(mazo.repartirCarta());
@@ -45,6 +45,7 @@ public class Ronda {
 
             evaluarGanadores();
             participantesActivosFinalRonda.clear();
+            jugadoresConBlackjack.clear();
 
         }
 
