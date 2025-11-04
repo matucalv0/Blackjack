@@ -32,9 +32,14 @@ public class Carta {
         this.palo = palo;
     }
 
+    public Palo getPalo(){
+        return palo;
+    }
+
     public void ocultar(){
         this.esVisible = false;
     }
+
 
     public void revelar(){
         this.esVisible = true;
@@ -50,7 +55,6 @@ public class Carta {
         } else if (valor.equals("A")){
             return 11;
         }
-
         return Integer.parseInt(valor);
     }
 

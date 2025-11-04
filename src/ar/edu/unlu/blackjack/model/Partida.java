@@ -1,5 +1,7 @@
 package ar.edu.unlu.blackjack.model;
 
+import ar.edu.unlu.blackjack.observer.Observable;
+import ar.edu.unlu.blackjack.observer.Observador;
 import ar.edu.unlu.model.excepciones.ApuestaMayorAlSaldoExcepcion;
 import ar.edu.unlu.model.excepciones.PartidaSinApuestasExcepcion;
 import ar.edu.unlu.model.excepciones.PartidaSinJugadoresExcepcion;
@@ -7,7 +9,8 @@ import ar.edu.unlu.model.excepciones.RondaVaciaExcepcion;
 
 import java.util.*;
 
-public class Partida {
+public class Partida implements Observable {
+    private ArrayList<Observador> observadores = new ArrayList<>();
     private ArrayList<Participante> participantes = new ArrayList<>();
     private Ronda ronda;
 
@@ -50,4 +53,21 @@ public class Partida {
     }
 
 
+    @Override
+    public void agregarObservador(Observador observador) {
+        observadores.add(observador);
+    }
+
+    @Override
+    public void eliminarObservador(Observador observador) {
+        observadores.remove(observador);
+
+    }
+
+    @Override
+    public void notificar() {
+        for (Observador observador: observadores){
+            observador.actualizar();
+        }
+    }
 }

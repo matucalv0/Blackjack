@@ -390,8 +390,6 @@ class BlackjackTest {
         partida.getListaParticipantes().get(1).agregarCarta(new Carta(10, Palo.DIAMANTE));
 
 
-
-
         partida.getRonda().participanteSePlanta();
         partida.getRonda().participanteSePlanta();
 

@@ -69,10 +69,6 @@ public class Ronda {
     }
 
 
-
-
-
-
     public void participantePideCarta() throws PuntajeMayorA21Excepcion {
         Participante participante = participanteConTurno();
         if (participante.puntajeActual() > 21){
