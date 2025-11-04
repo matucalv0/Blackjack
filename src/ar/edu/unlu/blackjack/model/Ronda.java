@@ -68,19 +68,27 @@ public class Ronda {
 
     }
 
-
-    public void participantePideCarta() throws PuntajeMayorA21Excepcion {
-        Participante participante = participanteConTurno();
-        if (participante.puntajeActual() > 21){
-            throw new PuntajeMayorA21Excepcion("Su puntaje es mayor a 21, no puede pedir mas cartas");
+    public boolean participanteSePaso(){
+        if (participanteConTurno().getMano().sePaso()){
+            colaTurnos.poll();
+            return true;
         }
+
+        return false;
+    }
+
+
+    public void participantePideCarta()  {
+
+        if (participanteConTurno() == null){
+            return;
+        }
+
+        Participante participante = participanteConTurno();
+
 
         participante.agregarCarta(mazo.repartirCarta());
 
-        if (participante.getMano().sePaso()){
-            colaTurnos.remove(participante);
-            System.out.println("El jugador " + participante + "se paso");
-        }
 
     }
 
@@ -126,6 +134,10 @@ public class Ronda {
 
 
     public void participanteSePlanta(){
+        if (colaTurnos.isEmpty()){
+            return;
+        }
+
         participantesActivosFinalRonda.add(colaTurnos.poll());
     }
 

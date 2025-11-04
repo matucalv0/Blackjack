@@ -18,6 +18,10 @@ public class Participante extends ParticipanteBase {
         jugador.agregarDinero(dinero);
     }
 
+    public String getNombre(){
+        return jugador.getNombre();
+    }
+
 
     public void dividir() {
 

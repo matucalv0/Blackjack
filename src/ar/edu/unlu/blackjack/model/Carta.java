@@ -32,6 +32,10 @@ public class Carta {
         this.palo = palo;
     }
 
+    public boolean isEsVisible(){
+        return esVisible;
+    }
+
     public Palo getPalo(){
         return palo;
     }

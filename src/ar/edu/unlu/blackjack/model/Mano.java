@@ -21,10 +21,12 @@ public class Mano {
         int cantidadAses = 0;
 
         for (Carta carta: cartas){
-            if (carta.getCaracter().equals("A")){
-                cantidadAses++;
+            if (carta.isEsVisible()){
+                if (carta.getCaracter().equals("A")){
+                    cantidadAses++;
+                }
+                p += carta.getValor();
             }
-            p += carta.getValor();
         }
 
         while (p > 21 && cantidadAses > 0){
