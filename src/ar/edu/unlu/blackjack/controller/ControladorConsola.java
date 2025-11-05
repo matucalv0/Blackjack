@@ -74,7 +74,7 @@ public class ControladorConsola implements Observador {
             switch (opcion){
                 case 1:
                     try {
-                        modelo.recibirApuesta(modelo.getParticipante(), vistaConsola.solicitarDato());
+                        modelo.recibirApuesta(vistaConsola.solicitarDato());
                         iniciarRonda();
                     } catch (ApuestaMayorAlSaldoExcepcion | PuntajeMayorA21Excepcion e ){
                         vistaConsola.mostrarMensaje(e.getMessage());
@@ -88,25 +88,24 @@ public class ControladorConsola implements Observador {
         }
     }
 
-    public void iniciarRonda() throws PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
+    public void iniciarRonda() throws PuntajeMayorA21Excepcion {
         boolean sePaso = false;
-        modelo.iniciarPartida();
+        modelo.rondaInicial();
         while (!sePaso){
-            actualizar();
             vistaConsola.vistaRonda();
             int opcion = vistaConsola.obtenerOpcion();
             switch (opcion){
                 case 1:
-                    modelo.getRonda().participantePideCarta();
+                    modelo.participantePideCarta();
                     break;
                 case 2:
-                    modelo.getRonda().participanteSePlanta();
+                    vistaConsola.mostrarMensaje("Se planto");
                     break;
                 default:
                     vistaConsola.mostrarMensaje("Opcion incorrecta");
                     break;
                 }
-                sePaso = modelo.getRonda().participanteSePaso();
+                sePaso = modelo.participanteSePaso();
 
         }
 
@@ -128,7 +127,7 @@ public class ControladorConsola implements Observador {
 
     @Override
     public void actualizar() {
-        vistaConsola.mostrarManoCrupier(modelo.getRonda().getCrupier());
+        vistaConsola.mostrarManoCrupier(modelo.getCrupier());
 
         vistaConsola.mostrarManoJugador(modelo.getParticipante());
 

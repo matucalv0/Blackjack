@@ -128,7 +128,7 @@ class BlackjackTest {
     @DisplayName("Cuando se crea una mesa, esta debe tener como minimo un Crupier y un Mazo")
     void verificarExistenciaDeCrupierYmazoCuandoSeCreaUnaMesa(){
 
-        assertTrue(partida.getRonda().getCrupier() != null && partida.getRonda().getMazo() != null);
+        assertTrue(partida.getCrupier() != null && partida.getMazo() != null);
     }
 
 
@@ -141,7 +141,7 @@ class BlackjackTest {
         Partida partida1 = new Partida(); // mesa sin jugadores
 
         assertThrows(PartidaSinJugadoresExcepcion.class, () -> {
-            partida.iniciarPartida();});
+            partida.rondaInicial();});
 
 
     }
@@ -152,7 +152,7 @@ class BlackjackTest {
         partida.jugadorSeUne(jugador);
 
         assertThrows(PartidaSinApuestasExcepcion.class, () -> {
-            partida.iniciarPartida();});
+            partida.rondaInicial();});
 
 
     }
@@ -169,11 +169,11 @@ class BlackjackTest {
 
         jugador.getBanca().agregarDinero(200);
 
-        partida.recibirApuesta(partida.getParticipante(), 100);
+        partida.recibirApuesta(100);
 
 
 
-        partida.iniciarPartida();   //inicio la partida
+        partida.rondaInicial();   //inicio la partida
 
         assertEquals(2, partida.getParticipante().getMano().cantidadCartas());
 
@@ -193,10 +193,10 @@ class BlackjackTest {
 
 
 
-        partida.recibirApuesta(partida.getParticipante(), 250);  // apuestan
+        partida.recibirApuesta(250);  // apuestan
 
 
-        partida.iniciarPartida();
+        partida.rondaInicial();
 
         assertEquals(2, partida.getParticipante().getMano().cantidadCartas());
 
@@ -229,16 +229,16 @@ class BlackjackTest {
 
         jugador1.getBanca().agregarDinero(1000);
 
-        partida.recibirApuesta(partida.getParticipante(), 500);
+        partida.recibirApuesta(500);
 
         partida.getParticipante().agregarCarta(new Carta(10, Palo.DIAMANTE));
         partida.getParticipante().agregarCarta(new Carta(10, Palo.TREBOL));
 
-        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
-        partida.getRonda().getCrupier().agregarCarta(new Carta(5, Palo.CORAZON));
+        partida.getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
+        partida.getCrupier().agregarCarta(new Carta(5, Palo.CORAZON));
 
 
-        partida.getRonda().evaluarGanador();  // el jugador gano, asi que su saldo debe haber incrementado a 1500.
+        partida.evaluarGanador();  // el jugador gano, asi que su saldo debe haber incrementado a 1500.
 
         assertEquals(1500, jugador1.getSaldo());
 
@@ -256,17 +256,17 @@ class BlackjackTest {
 
         jugador1.getBanca().agregarDinero(1000);
 
-        partida.recibirApuesta(partida.getParticipante(), 500);
+        partida.recibirApuesta(500);
 
         partida.getParticipante().agregarCarta(new Carta(10, Palo.DIAMANTE));
         partida.getParticipante().agregarCarta(new Carta(10, Palo.TREBOL));
 
-        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
-        partida.getRonda().getCrupier().agregarCarta(new Carta(1, Palo.CORAZON));
+        partida.getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
+        partida.getCrupier().agregarCarta(new Carta(1, Palo.CORAZON));
 
 
 
-        partida.getRonda().evaluarGanador();  // el jugador perdio, su saldo queda igual. Es decir saldo previo a la apuesta - apuesta.
+        partida.evaluarGanador();  // el jugador perdio, su saldo queda igual. Es decir saldo previo a la apuesta - apuesta.
 
         assertEquals(500, jugador1.getSaldo());
 
@@ -284,16 +284,16 @@ class BlackjackTest {
 
         jugador1.getBanca().agregarDinero(1000);
 
-        partida.recibirApuesta(partida.getParticipante(), 500);
+        partida.recibirApuesta(500);
 
         partida.getParticipante().agregarCarta(new Carta(10, Palo.DIAMANTE));
         partida.getParticipante().agregarCarta(new Carta(10, Palo.TREBOL));
 
-        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
-        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.PICAS));
+        partida.getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
+        partida.getCrupier().agregarCarta(new Carta(10, Palo.PICAS));
 
 
-        partida.getRonda().evaluarGanador();  // el jugador empato, se le devuelve la apuesta.
+        partida.evaluarGanador();  // el jugador empato, se le devuelve la apuesta.
 
         assertEquals(1000, jugador1.getSaldo());
 
@@ -310,17 +310,16 @@ class BlackjackTest {
 
         jugador1.getBanca().agregarDinero(1000);
 
-        partida.recibirApuesta(partida.getParticipante(), 500);
+        partida.recibirApuesta(500);
 
         partida.getParticipante().agregarCarta(new Carta(1, Palo.DIAMANTE));
         partida.getParticipante().agregarCarta(new Carta(10, Palo.TREBOL));
 
-        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
-        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.PICAS));
+        partida.getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));
+        partida.getCrupier().agregarCarta(new Carta(10, Palo.PICAS));
 
-        partida.getRonda().participanteSePlanta();
 
-        partida.getRonda().finDeRonda();
+        partida.finDeRonda();
 
         assertEquals(1625, jugador1.getSaldo());
 
@@ -339,17 +338,17 @@ class BlackjackTest {
 
         jugador1.getBanca().agregarDinero(1000);
 
-        partida.recibirApuesta(partida.getParticipante(), 500);
+        partida.recibirApuesta(500);
 
         partida.getParticipante().agregarCarta(new Carta(10, Palo.DIAMANTE));
         partida.getParticipante().agregarCarta(new Carta(10, Palo.TREBOL));
         partida.getParticipante().agregarCarta(new Carta(1, Palo.TREBOL));  //21, no blackjack
 
-        partida.getRonda().getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));  //blackjack
-        partida.getRonda().getCrupier().agregarCarta(new Carta(1, Palo.PICAS));
+        partida.getCrupier().agregarCarta(new Carta(10, Palo.CORAZON));  //blackjack
+        partida.getCrupier().agregarCarta(new Carta(1, Palo.PICAS));
 
 
-        partida.getRonda().finDeRonda();  // todos los jugadores que no hayan hecho blackjack deben perder
+        partida.finDeRonda();  // todos los jugadores que no hayan hecho blackjack deben perder
 
         assertEquals(500, jugador1.getSaldo());
 
