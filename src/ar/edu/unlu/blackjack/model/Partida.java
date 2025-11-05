@@ -3,15 +3,13 @@ package ar.edu.unlu.blackjack.model;
 import ar.edu.unlu.blackjack.observer.Observable;
 import ar.edu.unlu.blackjack.observer.Observador;
 import ar.edu.unlu.model.excepciones.ApuestaMayorAlSaldoExcepcion;
-import ar.edu.unlu.model.excepciones.PartidaSinApuestasExcepcion;
-import ar.edu.unlu.model.excepciones.PartidaSinJugadoresExcepcion;
 import ar.edu.unlu.model.excepciones.RondaVaciaExcepcion;
 
 import java.util.*;
 
 public class Partida implements Observable {
     private ArrayList<Observador> observadores = new ArrayList<>();
-    private ArrayList<Participante> participantes = new ArrayList<>();
+    private Participante participante;
     private Ronda ronda;
 
     public Partida(){
@@ -19,7 +17,7 @@ public class Partida implements Observable {
     }
 
     public void jugadorSeUne(Jugador jugador){
-        participantes.add(new Participante(jugador));
+        participante = new Participante(jugador);
     }
 
     public void recibirApuesta(Participante participante, double apuesta) throws ApuestaMayorAlSaldoExcepcion{
@@ -31,21 +29,17 @@ public class Partida implements Observable {
         participante.setApuesta(apuesta);
         participante.restarBanca(apuesta);
 
-        ronda.agregarJugadorRonda(participante);
+        ronda.agregarParticipante(participante);
 
     }
 
 
-    public void iniciarPartida() throws PartidaSinJugadoresExcepcion, RondaVaciaExcepcion {
-        if (participantes.isEmpty()){
-            throw new PartidaSinJugadoresExcepcion("Debe haber al menos un jugador en la mesa");
-        }
-
+    public void iniciarPartida() throws RondaVaciaExcepcion {
         ronda.rondaInicial();
     }
 
-    public ArrayList<Participante> getListaParticipantes(){
-        return participantes;
+    public Participante getParticipante(){
+        return participante;
     }
 
     public Ronda getRonda(){

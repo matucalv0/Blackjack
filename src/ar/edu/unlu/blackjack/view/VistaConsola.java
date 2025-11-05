@@ -40,17 +40,14 @@ public class VistaConsola {
         return sc.nextInt();
     }
 
-    public void mostrarManoJugadores(Queue<Participante> jugadoresRonda) {
-        int i = 0;
-        for (Participante participante : jugadoresRonda) {
-            i++;
-            Mano mano = participante.getMano();
-            System.out.printf("\n %s: ", participante.getNombre());
-            for (int j = 0; j < mano.getCartas().size(); j++) {
-                System.out.printf("|%s de %s| ", mano.getCartas().get(j).getCaracter(), mano.getCartas().get(j).getPalo());
-            }
-            System.out.printf("[%d] ", mano.puntaje());
+    public void mostrarManoJugador(Participante participante) {
+        Mano mano = participante.getMano();
+        System.out.printf("\n %s: ", participante.getNombre());
+        for (int j = 0; j < mano.getCartas().size(); j++) {
+            System.out.printf("|%s de %s| ", mano.getCartas().get(j).getCaracter(), mano.getCartas().get(j).getPalo());
         }
+        System.out.printf("[%d] ", mano.puntaje());
+
     }
 
     public void mostrarManoCrupier(Crupier crupier) {

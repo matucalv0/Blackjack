@@ -49,10 +49,10 @@ public class ControladorConsola implements Observador {
                         iniciarMesa();
                         break;
                     case 2:
-                        ingresarDinero(modelo.getListaParticipantes().getFirst());
+                        ingresarDinero(modelo.getParticipante());
                         break;
                     case 3:
-                        vistaConsola.mostrarDatos(modelo.getListaParticipantes().getFirst());
+                        vistaConsola.mostrarDatos(modelo.getParticipante());
                         break;
                     case 0:
                         vistaConsola.mostrarMensaje("Adios!");
@@ -74,7 +74,7 @@ public class ControladorConsola implements Observador {
             switch (opcion){
                 case 1:
                     try {
-                        modelo.recibirApuesta(modelo.getListaParticipantes().getFirst(), vistaConsola.solicitarDato());
+                        modelo.recibirApuesta(modelo.getParticipante(), vistaConsola.solicitarDato());
                         iniciarRonda();
                     } catch (ApuestaMayorAlSaldoExcepcion | PuntajeMayorA21Excepcion e ){
                         vistaConsola.mostrarMensaje(e.getMessage());
@@ -91,24 +91,22 @@ public class ControladorConsola implements Observador {
     public void iniciarRonda() throws PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
         boolean sePaso = false;
         modelo.iniciarPartida();
-        while (!modelo.getRonda().getColaTurnos().isEmpty()){  // se ejecuta mientras la cola tenga algun jugador
-            while (!sePaso){
-                actualizar();
-                vistaConsola.vistaRonda();
-                int opcion = vistaConsola.obtenerOpcion();
-                switch (opcion){
-                    case 1:
-                        modelo.getRonda().participantePideCarta();
-                        break;
-                    case 2:
-                        modelo.getRonda().participanteSePlanta();
-                        break;
-                    default:
-                        vistaConsola.mostrarMensaje("Opcion incorrecta");
-                        break;
+        while (!sePaso){
+            actualizar();
+            vistaConsola.vistaRonda();
+            int opcion = vistaConsola.obtenerOpcion();
+            switch (opcion){
+                case 1:
+                    modelo.getRonda().participantePideCarta();
+                    break;
+                case 2:
+                    modelo.getRonda().participanteSePlanta();
+                    break;
+                default:
+                    vistaConsola.mostrarMensaje("Opcion incorrecta");
+                    break;
                 }
                 sePaso = modelo.getRonda().participanteSePaso();
-            }
 
         }
 
@@ -132,7 +130,7 @@ public class ControladorConsola implements Observador {
     public void actualizar() {
         vistaConsola.mostrarManoCrupier(modelo.getRonda().getCrupier());
 
-        vistaConsola.mostrarManoJugadores(modelo.getRonda().getColaTurnos());
+        vistaConsola.mostrarManoJugador(modelo.getParticipante());
 
     }
 }

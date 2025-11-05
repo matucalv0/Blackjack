@@ -1,17 +1,10 @@
 package ar.edu.unlu.blackjack.model;
 
-import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
-import ar.edu.unlu.model.excepciones.RondaVaciaExcepcion;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class Ronda {
-    private Queue<Participante> colaTurnos = new LinkedList<>();
-    private ArrayList<Participante> participantesActivosFinalRonda = new ArrayList<>();
     private Mazo mazo;
     private Crupier crupier;
+    private Participante participante;
 
     public Ronda(){
         mazo = new Mazo();
@@ -19,58 +12,34 @@ public class Ronda {
     }
 
 
-    public void agregarJugadorRonda(Participante jugadorRonda){
-        colaTurnos.add(jugadorRonda);
+    public void agregarParticipante(Participante participante){
+        this.participante = participante;
     }
 
-    public void limpiarRonda(){
-        participantesActivosFinalRonda.clear();
-    }
 
 
     public void finDeRonda(){
-        ArrayList<Participante> jugadoresConBlackjack = new ArrayList<>();
-        boolean pierdenTodos = false;
-
-        for (Participante participante: participantesActivosFinalRonda){
-            if (hizoBlackjack(crupier)){
-                if (hizoBlackjack(participante)){
-                    devolverDinero(participante);
-                }
-                pierdenTodos = true;
-                break;
-            } else {
-                if (hizoBlackjack(participante)){
-                    pagoBlackjack(participante);
-                    jugadoresConBlackjack.add(participante);
-                }
+        if (hizoBlackjack(crupier)){
+            if (hizoBlackjack(participante)){
+                devolverDinero(participante);
+                return;
+            }
+        }else {
+            if (hizoBlackjack(participante)){
+                pagoBlackjack(participante);
+                return;
             }
         }
 
-        if (pierdenTodos){
-            participantesActivosFinalRonda.clear();
+        while (crupier.puntajeActual() < 17){
+            crupier.agregarCarta(mazo.repartirCarta());
         }
 
-        for (Participante participante: jugadoresConBlackjack){
-            participantesActivosFinalRonda.remove(participante);  //saco a los jugadores que hicieron blackjack
-        }
-
-
-        if (!participantesActivosFinalRonda.isEmpty()){
-            while (crupier.puntajeActual() < 17){
-                crupier.agregarCarta(mazo.repartirCarta());
-            }
-
-            evaluarGanadores();
-            participantesActivosFinalRonda.clear();
-        }
-
-
+        evaluarGanador();
     }
 
     public boolean participanteSePaso(){
-        if (participanteConTurno().getMano().sePaso()){
-            colaTurnos.poll();
+        if (participante.getMano().sePaso()){
             return true;
         }
 
@@ -80,33 +49,29 @@ public class Ronda {
 
     public void participantePideCarta()  {
 
-        if (participanteConTurno() == null){
+        if (participante == null){
             return;
         }
-
-        Participante participante = participanteConTurno();
-
 
         participante.agregarCarta(mazo.repartirCarta());
 
 
     }
 
-    public void evaluarGanadores(){
+    public void evaluarGanador(){
         if (crupier.getMano().sePaso()){
-            for (Participante participante: participantesActivosFinalRonda){
-                pagoNormal(participante);
-                participante.getApuesta().clearApuesta();
+            pagoNormal(participante);
+            participante.getApuesta().clearApuesta();
             }
-        } else {
-            for (Participante participante: participantesActivosFinalRonda){
-                if (participante.puntajeActual() > crupier.puntajeActual()){
-                    pagoNormal(participante);
-                } else if (participante.puntajeActual() == crupier.puntajeActual()){
-                    devolverDinero(participante);
-                }
-                participante.getApuesta().clearApuesta();
-            }
+         else {
+             if (participante.puntajeActual() > crupier.puntajeActual()){
+                 pagoNormal(participante);
+             } else if (participante.puntajeActual() == crupier.puntajeActual()){
+                 devolverDinero(participante);
+             }
+
+             participante.getApuesta().clearApuesta();
+
         }
 
     }
@@ -134,45 +99,24 @@ public class Ronda {
 
 
     public void participanteSePlanta(){
-        if (colaTurnos.isEmpty()){
-            return;
-        }
-
-        participantesActivosFinalRonda.add(colaTurnos.poll());
-    }
-
-    public Participante participanteConTurno(){
-        return colaTurnos.peek();
+        return;
     }
 
 
-    public ArrayList<Participante> getParticipantesActivosFinalRonda() {
-        return participantesActivosFinalRonda;
-    }
 
-    public void rondaInicial() throws RondaVaciaExcepcion {
-        if (colaTurnos.isEmpty()){
-            throw new RondaVaciaExcepcion("Ningun jugador apostó, no se puede iniciar la ronda");
-        }
+    public void rondaInicial() {
 
         crupier.agregarCarta(mazo.repartirCarta());
 
-        for (Participante participante : colaTurnos) {
-            participante.agregarCarta(mazo.repartirCarta());
-
-        }
+        participante.agregarCarta(mazo.repartirCarta());
 
         crupier.agregarCarta(mazo.repartirCarta());
 
-        for (Participante participante : colaTurnos) {
-            participante.agregarCarta(mazo.repartirCarta());
-        }
+        participante.agregarCarta(mazo.repartirCarta());
+
 
     }
 
-    public Queue<Participante> getColaTurnos(){
-        return colaTurnos;
-    }
 
     public Mazo getMazo() {
         return mazo;
