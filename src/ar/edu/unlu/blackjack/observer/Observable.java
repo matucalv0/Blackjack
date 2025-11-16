@@ -3,5 +3,5 @@ package ar.edu.unlu.blackjack.observer;
 public interface Observable {
     void agregarObservador(Observador observador);
     void eliminarObservador(Observador observador);
-    void notificar();
+    void notificar(Object o);
 }

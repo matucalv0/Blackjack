@@ -19,8 +19,9 @@ public class VistaConsola {
 
     public void login(){
         LimpiarConsola.limpiar();
-        System.out.println("---------- LOGIN ---------");
-        System.out.println("1. Loguearme");
+        System.out.println("---------- REGISTRO JUGADORES ---------");
+        System.out.println("1. Ingresar usuario ");
+        System.out.println("2. Ir a la mesa");
         System.out.println("0. Salir");
         System.out.println("Seleccione una opcion: ");
     }
@@ -40,19 +41,20 @@ public class VistaConsola {
         return sc.nextInt();
     }
 
-    public void mostrarManoJugador(Participante participante) {
-        Mano mano = participante.getMano();
-        System.out.printf("\n %s: ", participante.getNombre());
-        for (int j = 0; j < mano.getCartas().size(); j++) {
-            System.out.printf("|%s de %s| ", mano.getCartas().get(j).getCaracter(), mano.getCartas().get(j).getPalo());
+    public void mostrarManoJugadores(Queue<Participante> jugadoresRonda) {
+        for (Participante participante : jugadoresRonda) {
+            Mano mano = participante.getMano();
+            System.out.printf("\n %s: ", participante.getNombre());
+            for (int j = 0; j < mano.getCartas().size(); j++) {
+                System.out.printf("|%s de %s| ", mano.getCartas().get(j).getCaracter(), mano.getCartas().get(j).getPalo());
+            }
+            System.out.printf("[%d] ", mano.puntaje());
         }
-        System.out.printf("[%d] ", mano.puntaje());
-
     }
 
     public void mostrarManoCrupier(Crupier crupier) {
         Mano mano = crupier.getMano();
-        System.out.println("Crupier: ");
+        System.out.println("\nCrupier: ");
         for (int j = 0; j < mano.getCartas().size(); j++) {
             if (mano.getCartas().get(j).isEsVisible()){
                 System.out.printf("|%s de %s| ", mano.getCartas().get(j).getCaracter(), mano.getCartas().get(j).getPalo());
@@ -61,7 +63,7 @@ public class VistaConsola {
             }
 
         }
-        System.out.printf("[%d]", mano.puntaje());
+        System.out.printf("[%d] ", mano.puntaje());
 
     }
 
@@ -76,9 +78,9 @@ public class VistaConsola {
     public void mostrarMesa(){
         System.out.println("--------------- MESA ----------------");
         System.out.println("1. Ingresar apuesta ");
-        System.out.println("0. Salir de la mesa");
+        System.out.println("2. Pasar");
         System.out.println("Seleccione una opcion: ");
-    }
+    }5
 
     public void mostrarJugadoresEnLaMesa(ArrayList<Participante> participantes){
         for (Participante participante: participantes){

@@ -1,9 +1,7 @@
 package ar.edu.unlu.blackjack.controller;
 
 
-import ar.edu.unlu.blackjack.model.Jugador;
-import ar.edu.unlu.blackjack.model.Participante;
-import ar.edu.unlu.blackjack.model.Partida;
+import ar.edu.unlu.blackjack.model.*;
 import ar.edu.unlu.blackjack.observer.Observador;
 import ar.edu.unlu.blackjack.view.VistaConsola;
 import ar.edu.unlu.model.excepciones.ApuestaMayorAlSaldoExcepcion;
@@ -12,110 +10,73 @@ import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
 import ar.edu.unlu.model.excepciones.RondaVaciaExcepcion;
 
 public class ControladorConsola implements Observador {
-    private Partida modelo;
+    private Partida modeloPartida;
+    private Ronda modeloRonda;
     private VistaConsola vistaConsola;
 
-    public ControladorConsola(Partida modelo, VistaConsola vistaConsola) {
-        this.modelo = modelo;
+    public ControladorConsola(Partida modeloPartida, Ronda modeloRonda, VistaConsola vistaConsola) {
+        this.modeloPartida = modeloPartida;
+        this.modeloRonda = modeloRonda;
         this.vistaConsola = vistaConsola;
-        this.modelo.agregarObservador(this);
+        this.modeloPartida.agregarObservador(this);
+        this.modeloRonda.agregarObservador(this);
     }
 
-    public boolean loguearse(){
+
+    public boolean loguearse() throws PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, ApuestaMayorAlSaldoExcepcion {
         while (true){
             vistaConsola.login();
             int opcion = vistaConsola.obtenerOpcion();
             switch (opcion){
                 case 1:
-                    return true;
-                case 0:
-                    return false;
+                    unirJugador();
+                case 2:
+                    iniciarRonda();
                 default:
                     vistaConsola.mostrarMensaje("Opcion no valida");
             }
         }
-
     }
 
     public void iniciar() throws PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, ApuestaMayorAlSaldoExcepcion {
         if (loguearse()) {
             unirJugador();
-            while (true) {
-                vistaConsola.mostrarMenu();
-                int opcion = vistaConsola.obtenerOpcion();
-
-                switch (opcion) {
-                    case 1:
-                        iniciarMesa();
-                        break;
-                    case 2:
-                        ingresarDinero(modelo.getParticipante());
-                        break;
-                    case 3:
-                        vistaConsola.mostrarDatos(modelo.getParticipante());
-                        break;
-                    case 0:
-                        vistaConsola.mostrarMensaje("Adios!");
-                        return;
-                    default:
-                        vistaConsola.mostrarMensaje("Opcion no valida");
-                        break;
-                }
             }
-        }
+
         vistaConsola.mostrarMensaje("Adios!");
     }
 
-    public void iniciarMesa() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion {
-        while (true) {
+    public void faseDeApuestas() throws ApuestaMayorAlSaldoExcepcion {
+        for (Participante participante: modeloPartida.getListaParticipantes()){
+            vistaConsola.mostrarDatos(participante);
             vistaConsola.mostrarMesa();
-            int opcion = vistaConsola.obtenerOpcion();
-
-            switch (opcion){
-                case 1:
-                    try {
-                        modelo.recibirApuesta(vistaConsola.solicitarDato());
-                        iniciarRonda();
-                    } catch (ApuestaMayorAlSaldoExcepcion | PuntajeMayorA21Excepcion e ){
-                        vistaConsola.mostrarMensaje(e.getMessage());
-                    }
-                    break;
-                case 0:
-                    vistaConsola.mostrarMensaje("Saliendo de la mesa...");
-                    return;
+            if (vistaConsola.solicitarDato() == 1){
+                modeloPartida.recibirApuesta(participante, vistaConsola.solicitarDato());
             }
 
         }
     }
 
-    public void iniciarRonda() throws PuntajeMayorA21Excepcion {
-        boolean sePaso = false;
-        modelo.rondaInicial();
-        while (!sePaso){
-            vistaConsola.vistaRonda();
-            int opcion = vistaConsola.obtenerOpcion();
-            switch (opcion){
-                case 1:
-                    modelo.participantePideCarta();
-                    break;
-                case 2:
-                    vistaConsola.mostrarMensaje("Se planto");
-                    break;
-                default:
-                    vistaConsola.mostrarMensaje("Opcion incorrecta");
-                    break;
-                }
-                sePaso = modelo.participanteSePaso();
-
-        }
-
-
-
+    public void iniciarRonda() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion {
+       faseDeApuestas();
+       if (!modeloRonda.getColaTurnos().isEmpty()){
+           modeloRonda.rondaInicial();
+       }
     }
 
+
+
     public void unirJugador() {
-        Jugador nuevoJugador = new Jugador(vistaConsola.solicitarDato("usuario"));
-        modelo.jugadorSeUne(nuevoJugador);
+        String usuario = vistaConsola.solicitarDato("usuario");
+        for (Participante participante: modeloPartida.getListaParticipantes()){
+            if (participante.getNombre().equals(usuario)){
+                vistaConsola.mostrarMensaje("El jugador ya se encuentra registrado");
+                return;
+            }
+        }
+
+        Jugador nuevoJugador = new Jugador(usuario);
+        modeloPartida.jugadorSeUne(nuevoJugador);
     }
 
     public void ingresarDinero(Participante participante){
@@ -126,10 +87,18 @@ public class ControladorConsola implements Observador {
 
 
     @Override
-    public void actualizar() {
-        vistaConsola.mostrarManoCrupier(modelo.getCrupier());
+    public void actualizar(Object o) {
+        switch (o) {
+            case EVENTO_PARTIDA.JUGADOR_UNIDO -> vistaConsola.mostrarMensaje("Jugador se unió");
+            case EVENTO_PARTIDA.APUESTA_RECIBIDA -> vistaConsola.mostrarMensaje("Apuesta recibida");
+            case EVENTO_PARTIDA.PARTIDA_INICIADA -> vistaConsola.mostrarMensaje("Comienza la ronda!");
+            case EVENTO_RONDA.CARTA_REPARTIDA -> vistaConsola.mostrarManoJugadores(modeloRonda.getColaTurnos());
+            case EVENTO_RONDA.JUGADOR_SE_PASA -> vistaConsola.mostrarMensaje("El jugador se pasó!");
+            case EVENTO_RONDA.JUGADOR_SE_PLANTA -> vistaConsola.mostrarMensaje("Jugador se plantó");
+            case EVENTO_RONDA.CRUPIER_JUEGA -> vistaConsola.mostrarManoCrupier(modeloRonda.getCrupier());
+            default -> throw new IllegalStateException("Unexpected value: " + o);
+        }
 
-        vistaConsola.mostrarManoJugador(modelo.getParticipante());
 
     }
 }
