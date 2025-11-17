@@ -32,7 +32,9 @@ Toda la lógica del negocio (el "Modelo") está 100% desacoplada de la interfaz 
 A continuación, se muestran algunas capturas de pantalla del flujo principal del juego en su implementación actual por consola:
 
 **Inicio del Juego y Ronda de Apuestas**
+
 <img width="600" height="281" alt="juego1" src="https://github.com/user-attachments/assets/e282fb08-c59e-43fb-9d4b-c618939507ff" />
+
 <img width="412" height="212" alt="juego2" src="https://github.com/user-attachments/assets/10a11649-aa2a-4247-b90c-30e013ad13e4" />
 
 **Durante la Partida (Pidiendo Cartas)**
