@@ -1,7 +1,5 @@
 package ar.edu.unlu.blackjack.model;
 
-import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
-
 import java.util.ArrayList;
 
 public abstract class ParticipanteBase {

@@ -22,7 +22,6 @@ public class VistaConsola {
         System.out.println("1. Ingresar usuario ");
         System.out.println("2. Ir a la mesa");
         System.out.println("0. Salir");
-        System.out.println("Seleccione una opcion: ");
     }
 
 
@@ -41,9 +40,6 @@ public class VistaConsola {
     }
 
 
-    public int obtenerOpcion() {
-        return sc.nextInt();
-    }
 
     public void mostrarJugadoresFinales(ArrayList<Participante> jugadoresFinal){
         for (Participante participante : jugadoresFinal) {
@@ -116,7 +112,6 @@ public class VistaConsola {
         System.out.println("--------------- MESA ----------------");
         System.out.println("1. Ingresar apuesta ");
         System.out.println("2. Pasar");
-        System.out.println("Seleccione una opcion: ");
     }
 
     public void mostrarJugadoresEnLaMesa(ArrayList<Participante> participantes){
@@ -149,14 +144,10 @@ public class VistaConsola {
 
     public String solicitarDato(String nombreDelDato){
         System.out.println("Ingrese su " + nombreDelDato);
-        sc.nextLine();
         return sc.nextLine();
     }
 
-    public Double solicitarDato(){
-        System.out.println("Cuanto dinero desea ingresar? ");
-        return sc.nextDouble();
-    }
+
 
     public Double solicitarDatoApuesta(){
         System.out.println("Cuanto dinero desea apostar? ");
@@ -172,6 +163,10 @@ public class VistaConsola {
 
         sc.nextLine();
 
+    }
+
+    public void limpiarConsola(){
+        LimpiarConsola.limpiar();
     }
 
 

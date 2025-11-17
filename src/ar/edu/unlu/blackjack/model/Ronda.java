@@ -2,10 +2,7 @@ package ar.edu.unlu.blackjack.model;
 
 import ar.edu.unlu.blackjack.observer.Observable;
 import ar.edu.unlu.blackjack.observer.Observador;
-import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
-import ar.edu.unlu.model.excepciones.RondaVaciaExcepcion;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -35,46 +32,35 @@ public class Ronda implements Observable {
         crupier.getManos().getFirst().vaciarMano();
     }
 
-
-
-
-    public void finDeRonda(){
-        pagarDivision();
+    public void gestionBlackjack(){
         ArrayList<Participante> jugadoresConBlackjack = new ArrayList<>();
-        boolean pierdenTodos = false;
 
         for (Participante participante: participantesActivosFinalRonda){
-            if (hizoBlackjack(crupier)){
-                if (hizoBlackjack(participante)){
+            if (hizoBlackjack(participante)){
+                jugadoresConBlackjack.add(participante);
+                if (hizoBlackjack(crupier)){
                     devolverDinero(participante);
-                }
-                pierdenTodos = true;
-                break;
-            } else {
-                if (hizoBlackjack(participante)){
+                } else {
                     pagoBlackjack(participante);
-                    jugadoresConBlackjack.add(participante);
                 }
             }
-        }
-
-        if (pierdenTodos){
-            participantesActivosFinalRonda.clear();
-            notificar(EVENTO_RONDA.BANCA_GANA);
-            return;
         }
 
         for (Participante participante: jugadoresConBlackjack){
             participantesActivosFinalRonda.remove(participante);  //saco a los jugadores que hicieron blackjack
         }
+    }
 
+
+
+
+    public void finDeRonda(){
+        pagarDivision();
+        gestionBlackjack();
         evaluarGanadores();
         participantesActivosFinalRonda.clear();
         colaTurnos.clear();
         notificar(EVENTO_RONDA.RONDA_TERMINADA);
-
-
-
 
     }
 
@@ -134,9 +120,9 @@ public class Ronda implements Observable {
                     }
 
                     if((mano.puntaje() > crupier.puntajeActual()) || crupier.getMano().sePaso()){
-                        pagoNormal(participante);
+                        pagoNormalDivision(participante);
                     } else if (mano.puntaje() == crupier.puntajeActual()){
-                        devolverDinero(participante);
+                        devolverDineroDivision(participante);
                     }
                 }
 
@@ -182,8 +168,19 @@ public class Ronda implements Observable {
         participante.sumarBanca(participante.getApuesta().getMonto());
     }
 
+    public void devolverDineroDivision(Participante participante){
+        participante.sumarBanca(participante.getApuesta().getMonto() / 2);
+    }
+
     public void pagoNormal(Participante participante){
         double pagoApuesta = (participante.getApuesta().getMonto()) * 2;
+        participante.sumarBanca(pagoApuesta);
+    }
+
+
+
+    public void pagoNormalDivision(Participante participante) {
+        double pagoApuesta = ((participante.getApuesta().getMonto()) * 2) / 2;
         participante.sumarBanca(pagoApuesta);
     }
 

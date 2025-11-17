@@ -2,9 +2,6 @@ package ar.edu.unlu.blackjack.model;
 
 import ar.edu.unlu.blackjack.observer.Observable;
 import ar.edu.unlu.blackjack.observer.Observador;
-import ar.edu.unlu.model.excepciones.ApuestaMayorAlSaldoExcepcion;
-import ar.edu.unlu.model.excepciones.PartidaSinJugadoresExcepcion;
-import ar.edu.unlu.model.excepciones.RondaVaciaExcepcion;
 
 import java.util.*;
 
@@ -31,10 +28,7 @@ public class Partida implements Observable {
         }
     }
 
-    public void recibirApuesta(Participante participante, double apuesta) throws ApuestaMayorAlSaldoExcepcion{
-        if (Double.compare(apuesta, participante.getSaldoJugador()) > 0){
-            throw new ApuestaMayorAlSaldoExcepcion("Saldo insuficiente");
-        }
+    public void recibirApuesta(Participante participante, double apuesta){
 
         participante.setApuesta(apuesta);
         participante.restarBanca(apuesta);

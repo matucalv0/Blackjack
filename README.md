@@ -1,4 +1,6 @@
 Proyecto integrador "Blackjack"
 
-- Arquictectura de diseño MVC
+- Arquitectura de diseño MVC
 - Patron de diseño Observer.
+
+

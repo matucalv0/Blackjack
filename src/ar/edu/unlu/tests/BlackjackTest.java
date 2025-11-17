@@ -149,7 +149,7 @@ class BlackjackTest {
 
     @Test
     @DisplayName("Cuando se inicia una partida en una determinada mesa, cada jugador recibe 2 cartas")
-    void verificarQueCuandoSeIniciaUnaPartidaCadaJugadorRecibaDosCartas() throws PartidaSinJugadoresExcepcion, PartidaSinApuestasExcepcion, ApuestaMayorAlSaldoExcepcion, RondaVaciaExcepcion {
+    void verificarQueCuandoSeIniciaUnaPartidaCadaJugadorRecibaDosCartas() throws  AccionNoPermitidaExcepcion {
         Jugador jugador1 = new Jugador("Eduardo");
         Jugador jugador2 = new Jugador("Carlos");
 
@@ -174,7 +174,7 @@ class BlackjackTest {
 
     @Test
     @DisplayName("Si se inicia una ronda, cada jugador debe tener 2 cartas")
-    void verificarInicioDeRonda() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion {
+    void verificarInicioDeRonda() throws AccionNoPermitidaExcepcion {
         Jugador jugador1 = new Jugador("Eduardo");
 
         jugador.agregarDinero(500);    //añaden 500 a su cartera
@@ -199,7 +199,7 @@ class BlackjackTest {
 
     @Test
     @DisplayName("Si la mano de un jugador se pasa de 21 pero tiene un As, este mismo debe actuar como un 1 (restar 10)")
-    void verificarQueElAsActuaComo1SiLaManoSePasaDe21() throws PuntajeMayorA21Excepcion {
+    void verificarQueElAsActuaComo1SiLaManoSePasaDe21()  {
         participante.agregarCarta(new Carta(1 , Palo.TREBOL ));
         participante.agregarCarta(new Carta(5, Palo.PICAS));
         participante.agregarCarta(new Carta(10, Palo.CORAZON)); // se pasa de 21, el puntaje = 26. Pero como tiene un As, puntaje = 16
@@ -212,7 +212,7 @@ class BlackjackTest {
 
     @Test
     @DisplayName("Si el jugador le gana al crupier, se le paga la apuesta")
-    void verificarQueIncrementaElSaldoDelJugadorGanador() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
+    void verificarQueIncrementaElSaldoDelJugadorGanador() throws AccionNoPermitidaExcepcion {
         Jugador jugador1 = new Jugador("Eduardo");
 
 
@@ -240,7 +240,7 @@ class BlackjackTest {
 
     @Test
     @DisplayName("Si el jugador pierde se le resta su apuesta al saldo")
-    void verificarQueDecrementaElSaldoDelJugadorPerdedor() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
+    void verificarQueDecrementaElSaldoDelJugadorPerdedor() throws AccionNoPermitidaExcepcion {
         Jugador jugador1 = new Jugador("Eduardo");
 
 
@@ -268,7 +268,7 @@ class BlackjackTest {
 
     @Test
     @DisplayName("Si el jugador le empata al crupier, se devuelve la apuesta")
-    void verificarQueElSaldoNoSeModificaDelJugadorQueEmpato() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
+    void verificarQueElSaldoNoSeModificaDelJugadorQueEmpato() throws AccionNoPermitidaExcepcion {
         Jugador jugador1 = new Jugador("Eduardo");
 
 
@@ -295,7 +295,7 @@ class BlackjackTest {
 
     @Test
     @DisplayName("SI el jugador hace blackjack, automaticamente no participa mas de la ronda")
-    void verificarQueSiUnJugadorHaceBlackjackSeLePagaMasySaleDeLaRonda() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion {
+    void verificarQueSiUnJugadorHaceBlackjackSeLePagaMasySaleDeLaRonda() throws AccionNoPermitidaExcepcion {
         Jugador jugador1 = new Jugador("Eduardo");
 
 
@@ -324,7 +324,7 @@ class BlackjackTest {
 
     @Test
     @DisplayName("Si el jugador tiene 21, pero la banca hizo blackjack, gana la banca")
-    void verificarQueGanaLaBancaSiHaceBlackjackYAmbosTienen21() throws ApuestaMayorAlSaldoExcepcion, PartidaSinJugadoresExcepcion, RondaVaciaExcepcion, PuntajeMayorA21Excepcion {
+    void verificarQueGanaLaBancaSiHaceBlackjackYAmbosTienen21() throws AccionNoPermitidaExcepcion {
         Jugador jugador1 = new Jugador("Eduardo");
 
 
@@ -352,7 +352,7 @@ class BlackjackTest {
 
     @Test
     @DisplayName("Simular escenario: Dos jugadores con blackjack")
-    void simularEscenarioDosJugadoresConBlackjack() throws ApuestaMayorAlSaldoExcepcion {
+    void simularEscenarioDosJugadoresConBlackjack() throws AccionNoPermitidaExcepcion {
         Jugador jugador1 = crearJugador("Eduardo", 1000);
         Jugador jugador2 = crearJugador("Carlos", 1000);
 
