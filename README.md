@@ -55,7 +55,7 @@ A continuación, se muestran algunas capturas de pantalla del flujo principal de
 
 ## 🛣️ Roadmap y Futuras Implementaciones
 
-El diseño actual se construyó explícitamente para permitir las siguientes mejoras con un mínimo de fricción:
+El diseño actual se construyó explícitamente para permitir las siguientes mejoras:
 
 * [**Próximo Paso**] **Implementación de Interfaz Gráfica (GUI):**
     * El siguiente objetivo es reemplazar la vista de consola por una interfaz gráfica (usando JavaFX o Swing).
