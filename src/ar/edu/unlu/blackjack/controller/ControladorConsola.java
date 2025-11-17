@@ -141,7 +141,7 @@ public class ControladorConsola implements Observador {
         switch (o) {
             case EVENTO_PARTIDA.JUGADOR_UNIDO -> vistaConsola.mostrarMensaje("Jugador se unió");
             case EVENTO_PARTIDA.APUESTA_RECIBIDA -> vistaConsola.mostrarMensaje("Apuesta recibida");
-            case EVENTO_PARTIDA.PARTIDA_INICIADA, EVENTO_RONDA.CARTA_REPARTIDA -> {
+            case EVENTO_PARTIDA.PARTIDA_INICIADA, EVENTO_RONDA.CARTA_REPARTIDA, EVENTO_RONDA.MANO_DIVIDIDA -> {
                 vistaConsola.mostrarManoCrupier(modeloRonda.getCrupier());
                 vistaConsola.mostrarManoJugadores(modeloRonda.getColaTurnos());
             }

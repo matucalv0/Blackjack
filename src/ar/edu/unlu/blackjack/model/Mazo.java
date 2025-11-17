@@ -7,7 +7,10 @@ public class Mazo {
 
 
     public Mazo(){
-        generarMazo();
+        for (int i = 0; i < 5; i++) {
+            generarMazo();
+        }
+
         mezclarMazo();
     }
 

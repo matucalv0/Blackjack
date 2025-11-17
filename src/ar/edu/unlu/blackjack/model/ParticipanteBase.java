@@ -31,9 +31,6 @@ public abstract class ParticipanteBase {
         return manos.get(manoActual).puntaje();
     }
 
-    public void incrementarIndiceMano(){
-        this.manoActual++;
-    }
 
     public ArrayList<Mano> getManos(){
         return this.manos;

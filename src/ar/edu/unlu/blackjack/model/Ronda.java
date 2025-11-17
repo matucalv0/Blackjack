@@ -39,7 +39,7 @@ public class Ronda implements Observable {
 
 
     public void finDeRonda(){
-        notificar(EVENTO_RONDA.RONDA_TERMINADA);
+        pagarDivision();
         ArrayList<Participante> jugadoresConBlackjack = new ArrayList<>();
         boolean pierdenTodos = false;
 
@@ -71,6 +71,8 @@ public class Ronda implements Observable {
         evaluarGanadores();
         participantesActivosFinalRonda.clear();
         colaTurnos.clear();
+        notificar(EVENTO_RONDA.RONDA_TERMINADA);
+
 
 
 
@@ -130,7 +132,8 @@ public class Ronda implements Observable {
                     if(mano.sePaso()) {   //si se paso la mano, pierde
                         break;
                     }
-                    if(mano.puntaje() > crupier.puntajeActual()){
+
+                    if((mano.puntaje() > crupier.puntajeActual()) || crupier.getMano().sePaso()){
                         pagoNormal(participante);
                     } else if (mano.puntaje() == crupier.puntajeActual()){
                         devolverDinero(participante);
@@ -143,15 +146,15 @@ public class Ronda implements Observable {
         }
 
         for (Participante participante: participantes){
+            participante.resetIndiceMano();
+            participante.resetMano();
             participantesActivosFinalRonda.remove(participante);  //elimino a todos los jugadores que dividieron
         }
 
     }
 
     public void evaluarGanadores(){
-        pagarDivision();
         if (participantesActivosFinalRonda.isEmpty()){
-            notificar(EVENTO_RONDA.RONDA_TERMINADA);
             return;
         }
 
@@ -171,7 +174,6 @@ public class Ronda implements Observable {
             }
         }
 
-        notificar(EVENTO_RONDA.RONDA_TERMINADA);
 
     }
 

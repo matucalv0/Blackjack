@@ -23,7 +23,20 @@ public class Participante extends ParticipanteBase {
     }
 
     public void doblarApuesta(){
+        restarBanca(apuesta.getMonto());
         apuesta.setMonto(apuesta.getMonto() * 2);
+    }
+
+    public void incrementarIndiceMano(){
+        this.manoActual++;
+    }
+
+    public void resetIndiceMano(){
+        this.manoActual = 0;
+    }
+    public void resetMano(){
+        this.getManos().clear();
+        this.getManos().add(new Mano());
     }
 
 

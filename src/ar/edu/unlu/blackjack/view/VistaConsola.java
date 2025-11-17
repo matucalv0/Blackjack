@@ -25,15 +25,7 @@ public class VistaConsola {
         System.out.println("Seleccione una opcion: ");
     }
 
-    public void mostrarMenu() {
-        System.out.println("------- Blackjack -------");
-        System.out.println("1. Unirme a la mesa ");
-        System.out.println("2. Ingresar dinero ");
-        System.out.println("3. Mis datos ");
-        System.out.println("0. Salir");
-        System.out.println("Seleccione una opcion: ");
 
-    }
 
     public void vistaMesa(ArrayList<Participante> jugadores, Crupier crupier){
         System.out.println("┌─────────────────────────────────────────────────┐");
@@ -115,6 +107,7 @@ public class VistaConsola {
     }
 
     public void mostrarDatos(Participante participante){
+        LimpiarConsola.limpiar();
         System.out.printf("Usuario: %s \n Dinero: %f%n", participante.getNombre(), participante.getSaldoJugador());
 
     }
