@@ -22,14 +22,11 @@ public class Participante extends ParticipanteBase {
         return jugador.getNombre();
     }
 
-
-    public void dividir() {
-
+    public void doblarApuesta(){
+        apuesta.setMonto(apuesta.getMonto() * 2);
     }
 
-    public void doblar() {
 
-    }
 
 
 

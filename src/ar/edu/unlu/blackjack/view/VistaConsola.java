@@ -18,7 +18,6 @@ public class VistaConsola {
     private Scanner sc = new Scanner(System.in);
 
     public void login(){
-        LimpiarConsola.limpiar();
         System.out.println("---------- REGISTRO JUGADORES ---------");
         System.out.println("1. Ingresar usuario ");
         System.out.println("2. Ir a la mesa");
@@ -27,7 +26,6 @@ public class VistaConsola {
     }
 
     public void mostrarMenu() {
-        LimpiarConsola.limpiar();
         System.out.println("------- Blackjack -------");
         System.out.println("1. Unirme a la mesa ");
         System.out.println("2. Ingresar dinero ");
@@ -37,41 +35,87 @@ public class VistaConsola {
 
     }
 
+    public void vistaMesa(ArrayList<Participante> jugadores, Crupier crupier){
+        System.out.println("┌─────────────────────────────────────────────────┐");
+        System.out.println("│                    MESA                         │");
+        System.out.println("├─────────────────────────────────────────────────┤");
+
+        mostrarJugadoresEnLaMesa(jugadores);
+
+        System.out.println("└─────────────────────────────────────────────────┘");
+
+        System.out.println("1. Iniciar ronda de apuestas");
+        System.out.println("0. Salir");
+    }
+
+
     public int obtenerOpcion() {
         return sc.nextInt();
     }
 
+    public void mostrarJugadoresFinales(ArrayList<Participante> jugadoresFinal){
+        for (Participante participante : jugadoresFinal) {
+            ArrayList<Mano> manos = participante.getManos();
+            for (Mano mano : manos) {
+                System.out.println();
+                System.out.println("╔══════════════════════════════════════════════╗");
+                System.out.printf("║ %-44s║%n",
+                        participante.getNombre());
+                System.out.println("╠══════════════════════════════════════════════╣");
+                System.out.println("║ Cartas:                                      ║");
+                System.out.println("║                                              ║");
+
+                DibujarCarta.renderCartasEnFila(mano.getCartas());
+
+                System.out.println("║                                              ║");
+                System.out.println("╠══════════════════════════════════════════════╣");
+                System.out.printf("║ Valor: %-36s║%n", mano.puntaje());
+                System.out.println("╚══════════════════════════════════════════════╝");
+            }
+        }
+
+
+    }
+
     public void mostrarManoJugadores(Queue<Participante> jugadoresRonda) {
         for (Participante participante : jugadoresRonda) {
-            Mano mano = participante.getMano();
-            System.out.printf("\n %s: ", participante.getNombre());
-            for (int j = 0; j < mano.getCartas().size(); j++) {
-                System.out.printf("|%s de %s| ", mano.getCartas().get(j).getCaracter(), mano.getCartas().get(j).getPalo());
+            ArrayList<Mano> manos = participante.getManos();
+            for (Mano mano : manos) {
+                System.out.println();
+                System.out.println("╔══════════════════════════════════════════════╗");
+                System.out.printf("║ %-44s║%n",
+                        participante.getNombre());
+                System.out.println("╠══════════════════════════════════════════════╣");
+                System.out.println("║ Cartas:                                      ║");
+                System.out.println("║                                              ║");
+
+                DibujarCarta.renderCartasEnFila(mano.getCartas());
+
+                System.out.println("║                                              ║");
+                System.out.println("╠══════════════════════════════════════════════╣");
+                System.out.printf("║ Valor: %-36s║%n", mano.puntaje());
+                System.out.println("╚══════════════════════════════════════════════╝");
             }
-            System.out.printf("[%d] ", mano.puntaje());
         }
     }
 
     public void mostrarManoCrupier(Crupier crupier) {
-        Mano mano = crupier.getMano();
-        System.out.println("\nCrupier: ");
-        for (int j = 0; j < mano.getCartas().size(); j++) {
-            if (mano.getCartas().get(j).isEsVisible()){
-                System.out.printf("|%s de %s| ", mano.getCartas().get(j).getCaracter(), mano.getCartas().get(j).getPalo());
-            } else {
-                System.out.println("|??| ");
-            }
+        System.out.println("╔══════════════════════════════════════════════╗");
+        System.out.println("║                   CRUPIER                    ║");
+        System.out.println("╠══════════════════════════════════════════════╣");
+        System.out.println("║ Cartas:                                      ║");
+        System.out.println("║                                              ║");
 
-        }
-        System.out.printf("[%d] ", mano.puntaje());
+        DibujarCarta.renderCartasEnFila(crupier.getManos().getFirst().getCartas());
 
+        System.out.println("║                                              ║");
+        System.out.println("╠══════════════════════════════════════════════╣");
+        System.out.printf ("║ Valor actual: %-28s   ║%n", crupier.puntajeActual());
+        System.out.println("╚══════════════════════════════════════════════╝");
     }
 
     public void mostrarDatos(Participante participante){
-        LimpiarConsola.limpiar();
         System.out.printf("Usuario: %s \n Dinero: %f%n", participante.getNombre(), participante.getSaldoJugador());
-        esperarEnter();
-        sc.nextLine();
 
     }
 
@@ -80,37 +124,53 @@ public class VistaConsola {
         System.out.println("1. Ingresar apuesta ");
         System.out.println("2. Pasar");
         System.out.println("Seleccione una opcion: ");
-    }5
-
-    public void mostrarJugadoresEnLaMesa(ArrayList<Participante> participantes){
-        for (Participante participante: participantes){
-            System.out.println(participante.getNombre());
-        }
-
     }
 
-    public void vistaRonda(){
+    public void mostrarJugadoresEnLaMesa(ArrayList<Participante> participantes){
+        for (Participante p : participantes){
+            System.out.println("│                                                 │");
+            System.out.println("│   ┌───────────────────────────────┐             │");
+            System.out.printf ("│   │ %-30s│             │%n", p.getNombre());
+            System.out.printf ("│   │ Dinero: $%-21s│             │%n",
+                    String.format("%,.0f", p.getSaldoJugador()));
+            System.out.println("│   └───────────────────────────────┘             │");
+        }
+    }
+
+
+    public void vistaRonda(Participante participante){
+        System.out.printf("Turno jugador: %s ", participante.getNombre());
         System.out.println("\n1. Pedir carta ");
         System.out.println("2. Plantarse \n");
     }
 
 
+    public void vistaRondaExtendida(Participante participante){
+        System.out.printf("Turno jugador: %s ", participante.getNombre());
+        System.out.println("\n1. Pedir carta ");
+        System.out.println("2. Plantarse \n");
+        System.out.println("3. Dividir \n");
+
+    }
+
+
     public String solicitarDato(String nombreDelDato){
-        LimpiarConsola.limpiar();
         System.out.println("Ingrese su " + nombreDelDato);
         sc.nextLine();
         return sc.nextLine();
     }
 
     public Double solicitarDato(){
-        LimpiarConsola.limpiar();
         System.out.println("Cuanto dinero desea ingresar? ");
-        sc.nextLine();
+        return sc.nextDouble();
+    }
+
+    public Double solicitarDatoApuesta(){
+        System.out.println("Cuanto dinero desea apostar? ");
         return sc.nextDouble();
     }
 
     public void mostrarMensaje(String mensaje){
-        LimpiarConsola.limpiar();
         System.out.println(mensaje);
     }
 

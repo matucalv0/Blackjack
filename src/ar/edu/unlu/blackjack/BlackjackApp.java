@@ -18,7 +18,7 @@ public class BlackjackApp {
 
         ControladorConsola controladorConsola = new ControladorConsola(modeloPartida, modeloRonda, vista);
 
-        controladorConsola.iniciar();
+        controladorConsola.loguearse();
 
         System.out.println("Blackjack");
     }

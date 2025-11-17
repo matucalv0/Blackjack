@@ -2,30 +2,45 @@ package ar.edu.unlu.blackjack.model;
 
 import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
 
+import java.util.ArrayList;
+
 public abstract class ParticipanteBase {
-    protected Mano mano;
+    private ArrayList<Mano> manos = new ArrayList<>();
+    protected int manoActual = 0;
 
     public ParticipanteBase(){
-        this.mano = new Mano();
+        manos.add(new Mano());
     }
 
 
     public void agregarCarta(Carta carta){
-        mano.addCarta(carta);
+        manos.get(manoActual).addCarta(carta);
     }
 
     public int cantidadCartasEnMano(){
-        return mano.cantidadCartas();
+        return manos.get(manoActual).cantidadCartas();
     }
 
 
     public Mano getMano(){
-        return mano;
+        return manos.get(manoActual);
     }
     
 
     public int puntajeActual(){
-        return this.mano.puntaje();
+        return manos.get(manoActual).puntaje();
+    }
+
+    public void incrementarIndiceMano(){
+        this.manoActual++;
+    }
+
+    public ArrayList<Mano> getManos(){
+        return this.manos;
+    }
+
+    public void agregarMano(Mano mano){
+        manos.add(mano);
     }
 
 

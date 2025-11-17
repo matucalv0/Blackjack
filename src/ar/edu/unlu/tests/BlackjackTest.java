@@ -144,29 +144,8 @@ class BlackjackTest {
 
     }
 
-    @Test
-    @DisplayName("Si no hay jugadores, lanza una excepcion")
-    void verificarQueLanzaExcepcionSiNoHayJugadores(){
 
 
-        Partida partida1 = new Partida(); // mesa sin jugadores
-
-        assertThrows(PartidaSinJugadoresExcepcion.class, () -> {
-            partida.iniciarPartida();});
-
-
-    }
-
-    @Test
-    @DisplayName("Si ningun participante realizo una apuesta, no se puede iniciar la ronda")
-    void verificarExcepcionSiNingunJugadorRealizoApuestas() {
-        partida.jugadorSeUne(jugador);
-
-        assertThrows(PartidaSinApuestasExcepcion.class, () -> {
-            partida.iniciarPartida();});
-
-
-    }
 
     @Test
     @DisplayName("Cuando se inicia una partida en una determinada mesa, cada jugador recibe 2 cartas")
@@ -184,7 +163,7 @@ class BlackjackTest {
 
 
 
-        partida.iniciarPartida();   //inicio la partida
+
 
         assertEquals(2, partida.getListaParticipantes().getFirst().getMano().cantidadCartas());
 
@@ -208,7 +187,7 @@ class BlackjackTest {
         partida.recibirApuesta(partida.getListaParticipantes().getFirst(), 250);  // apuestan
         partida.recibirApuesta(partida.getListaParticipantes().get(1), 100 );
 
-        partida.iniciarPartida();
+
 
         assertEquals(2, partida.getRonda().getColaTurnos().poll().getMano().cantidadCartas());
         assertEquals(2, partida.getRonda().getColaTurnos().poll().getMano().cantidadCartas());

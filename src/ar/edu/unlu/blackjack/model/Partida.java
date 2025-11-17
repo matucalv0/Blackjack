@@ -22,6 +22,15 @@ public class Partida implements Observable {
         notificar(EVENTO_PARTIDA.JUGADOR_UNIDO);
     }
 
+    public void limpiarManos(){
+        ronda.limpiarManoCrupier();
+        for(Participante participante: participantes){
+            for(Mano mano: participante.getManos()){
+                mano.vaciarMano();
+            }
+        }
+    }
+
     public void recibirApuesta(Participante participante, double apuesta) throws ApuestaMayorAlSaldoExcepcion{
         if (Double.compare(apuesta, participante.getSaldoJugador()) > 0){
             throw new ApuestaMayorAlSaldoExcepcion("Saldo insuficiente");

@@ -5,6 +5,7 @@ import ar.edu.unlu.blackjack.observer.Observador;
 import ar.edu.unlu.model.excepciones.PuntajeMayorA21Excepcion;
 import ar.edu.unlu.model.excepciones.RondaVaciaExcepcion;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -30,8 +31,15 @@ public class Ronda implements Observable {
         participantesActivosFinalRonda.clear();
     }
 
+    public void limpiarManoCrupier(){
+        crupier.getManos().getFirst().vaciarMano();
+    }
+
+
+
 
     public void finDeRonda(){
+        notificar(EVENTO_RONDA.RONDA_TERMINADA);
         ArrayList<Participante> jugadoresConBlackjack = new ArrayList<>();
         boolean pierdenTodos = false;
 
@@ -52,24 +60,32 @@ public class Ronda implements Observable {
 
         if (pierdenTodos){
             participantesActivosFinalRonda.clear();
+            notificar(EVENTO_RONDA.BANCA_GANA);
+            return;
         }
 
         for (Participante participante: jugadoresConBlackjack){
             participantesActivosFinalRonda.remove(participante);  //saco a los jugadores que hicieron blackjack
         }
 
+        evaluarGanadores();
+        participantesActivosFinalRonda.clear();
+        colaTurnos.clear();
 
-        if (!participantesActivosFinalRonda.isEmpty()){
-            while (crupier.puntajeActual() < 17){
-                crupier.agregarCarta(mazo.repartirCarta());
-            }
-
-            evaluarGanadores();
-            participantesActivosFinalRonda.clear();
-        }
 
 
     }
+
+    public void faseCrupier(){
+        crupier.revelarCarta();
+
+        while(crupier.puntajeActual() < 17){
+            crupier.agregarCarta(mazo.repartirCarta());
+        }
+
+        notificar(EVENTO_RONDA.CRUPIER_JUEGA);
+    }
+
 
     public void participanteSePaso(){
         if (participanteConTurno().getMano().sePaso()){
@@ -77,12 +93,21 @@ public class Ronda implements Observable {
         }
     }
 
+    public boolean jugadorTieneUnaSolaMano(){
+        return participanteConTurno().getManos().size() == 1;
+    }
+
 
     public void participantePideCarta()  {
         Participante participante = participanteConTurno();
         participante.agregarCarta(mazo.repartirCarta());
 
-        if (participante.puntajeActual() > 21){
+        if (participante.getMano().sePaso()){
+            if ((participante.getManos().size() > 1) && (participante.manoActual == 0)){  //si dividio y es la mano 1, incrementa el indice
+                participante.incrementarIndiceMano();
+                notificar(EVENTO_RONDA.JUGADOR_SE_PASA);
+                return;
+            }
             notificar(EVENTO_RONDA.JUGADOR_SE_PASA);
             participanteSePaso();
         } else {
@@ -93,7 +118,43 @@ public class Ronda implements Observable {
 
     }
 
+    public void pagarDivision(){
+        ArrayList<Participante> participantes = new ArrayList<>();
+        for (Participante participante: participantesActivosFinalRonda){
+            if (participante.getManos().size() == 2){
+                if (hizoBlackjack(crupier)){   //si hizo blackjack, pierde (no hay blackjack si dividis)
+                    participantes.add(participante);
+                    break;
+                }
+                for(Mano mano: participante.getManos()){
+                    if(mano.sePaso()) {   //si se paso la mano, pierde
+                        break;
+                    }
+                    if(mano.puntaje() > crupier.puntajeActual()){
+                        pagoNormal(participante);
+                    } else if (mano.puntaje() == crupier.puntajeActual()){
+                        devolverDinero(participante);
+                    }
+                }
+
+                participantes.add(participante);  //agrego a los jugadores que dividieron para despues borrarlos
+                participante.getApuesta().clearApuesta();
+            }
+        }
+
+        for (Participante participante: participantes){
+            participantesActivosFinalRonda.remove(participante);  //elimino a todos los jugadores que dividieron
+        }
+
+    }
+
     public void evaluarGanadores(){
+        pagarDivision();
+        if (participantesActivosFinalRonda.isEmpty()){
+            notificar(EVENTO_RONDA.RONDA_TERMINADA);
+            return;
+        }
+
         if (crupier.getMano().sePaso()){
             for (Participante participante: participantesActivosFinalRonda){
                 pagoNormal(participante);
@@ -109,6 +170,8 @@ public class Ronda implements Observable {
                 participante.getApuesta().clearApuesta();
             }
         }
+
+        notificar(EVENTO_RONDA.RONDA_TERMINADA);
 
     }
 
@@ -135,7 +198,15 @@ public class Ronda implements Observable {
 
 
     public void participanteSePlanta(){
+        Participante participante = participanteConTurno();
+        if ((participante.getManos().size() > 1) && (participante.manoActual == 0)) {  //si dividio y es la mano 1, incrementa el indice
+            participante.incrementarIndiceMano();
+            notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA);
+            return;
+        }
+
         participantesActivosFinalRonda.add(colaTurnos.poll());
+        notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA);
     }
 
     public Participante participanteConTurno(){
@@ -160,6 +231,40 @@ public class Ronda implements Observable {
         for (Participante participante : colaTurnos) {
             participante.agregarCarta(mazo.repartirCarta());
         }
+
+        notificar(EVENTO_PARTIDA.PARTIDA_INICIADA);
+
+    }
+
+    public void dividirMano(){
+        Participante participante = participanteConTurno();
+        Carta c1 = participante.getMano().getCartas().removeFirst();
+
+        Mano manoNueva = new Mano();
+        manoNueva.addCarta(c1);
+
+        participante.agregarMano(manoNueva);
+    }
+
+    public void jugadorDivide(){
+        Participante participante = participanteConTurno();
+        participante.doblarApuesta();
+        dividirMano();
+        notificar(EVENTO_RONDA.MANO_DIVIDIDA);
+    }
+
+    public boolean verificarDividir(){
+        Participante participante = participanteConTurno();
+        ArrayList<Carta> cartas = participante.getMano().getCartas();
+
+        if (cartas.size() != 2){
+            return false;
+        }
+
+        int carta1 = cartas.getFirst().getValor();
+        int carta2 = cartas.get(1).getValor();
+
+        return carta1 == carta2;
 
     }
 

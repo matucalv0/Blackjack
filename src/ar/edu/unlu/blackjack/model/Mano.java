@@ -3,7 +3,7 @@ package ar.edu.unlu.blackjack.model;
 import java.util.ArrayList;
 
 public class Mano {
-    ArrayList<Carta> cartas = new ArrayList<>();
+    private ArrayList<Carta> cartas = new ArrayList<>();
 
 
     public Mano(){};
@@ -37,6 +37,10 @@ public class Mano {
 
 
         return p;
+    }
+
+    public void vaciarMano(){
+        cartas.clear();
     }
 
 
