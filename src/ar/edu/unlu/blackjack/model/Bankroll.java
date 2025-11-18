@@ -10,11 +10,23 @@ public class Bankroll {
     }
 
 
-    public void agregarDinero(double dinero){
+    public void agregarDinero(double dinero) {
+        if(dinero < 0){
+            return;
+        }
+
         this.dinero += dinero;
     }
 
-    public void restarDinero(double dinero){
+    public void restarDinero(double dinero) {
+        if (dinero < 0) {
+            return;
+        }
+
+        if (dinero > this.dinero) {
+            return;
+        }
+
         this.dinero -= dinero;
     }
 

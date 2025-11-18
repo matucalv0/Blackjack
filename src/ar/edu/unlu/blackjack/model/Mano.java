@@ -57,6 +57,10 @@ public class Mano {
         return (puntaje() > 21);
     }
 
+    public boolean esBlackjack(){
+        return ((cartas.size() == 2 ) && puntaje() == 21);
+    }
+
 
 
     @Override

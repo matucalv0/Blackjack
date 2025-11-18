@@ -185,14 +185,14 @@ public class Ronda implements Observable {
     }
 
     public void pagoBlackjack(Participante participante){
-        double pagoApuesta = (participante.getApuesta().getMonto()) * 2.25;
+        double pagoApuesta = (participante.getApuesta().getMonto()) * 2.50;
         participante.sumarBanca(pagoApuesta);
     }
 
 
 
     public boolean hizoBlackjack(ParticipanteBase participante){
-        return (participante.puntajeActual() == 21) && (participante.cantidadCartasEnMano() == 2);
+        return (participante.getMano().esBlackjack());
     }
 
 
