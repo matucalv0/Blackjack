@@ -21,7 +21,8 @@ Toda la lógica del negocio (el "Modelo") está 100% desacoplada de la interfaz 
 ## 🏛️ Arquitectura del Modelo
 
 * `Partida` y `Ronda`: Actúan como los "Sujetos" (Observables) principales, orquestando el flujo del juego.
-* `ParticipanteBase`: Es la clase abstracta de la que heredan `Jugador` (humano) y `Crupier`, evitando duplicación de código.
+* Aclarar la diferencia entre `Jugador` y `Participante`. Jugador se refiere a la persona, Participante al rol de una persona en una mesa. Esto permite gestionar mejor el bankroll de un jugador.
+* `ParticipanteBase`: Es la clase abstracta de la que heredan `Partipante` y `Crupier`, evitando duplicación de código.
 * `Mano`, `Carta`, `Bankroll`, `Apuesta`: Clases de entidad que encapsulan reglas de negocio específicas.
 
 
