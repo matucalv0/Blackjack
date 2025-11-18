@@ -53,23 +53,21 @@ class RondaTest {
     @Test
     void testDobleBlackjackEsEmpate() {
         // 1. Jugador hace apuesta.
-        // Asumo que tu modelo Partida/Ronda se encarga de restar del bankroll
-        // y ponerlo en la apuesta.
         partida.recibirApuesta(participante1, 100);
         assertEquals(400.0, jugador1.getSaldo());
 
-        // 2. Forzamos las manos (asumo que ParticipanteBase tiene recibirCarta(Carta))
+        // 2. Forzamos las manos
         participante1.getMano().addCarta(asPicas);
         participante1.getMano().addCarta(reyPicas); // Blackjack Jugador
 
         crupier.getMano().addCarta(asCorazones);
         crupier.getMano().addCarta(reinaCorazones); // Blackjack Crupier
 
-        // 3. Ejecutamos el fin de ronda (el método que paga)
+
         ronda.getParticipantesActivosFinalRonda().add(participante1); //lo agrego a la lista final
         ronda.finDeRonda();
 
-        // 4. Verificamos. Es empate (push), se devuelve la apuesta.
+        // 4. Verificamos. Es empate, se devuelve la apuesta.
         // El jugador tenía 400 + 100 devueltos = 500
         assertEquals(500.0, jugador1.getSaldo());
     }
@@ -91,7 +89,7 @@ class RondaTest {
         ronda.getParticipantesActivosFinalRonda().add(participante1); //lo agrego a la lista final
         ronda.finDeRonda();
 
-        // 4. Verificamos. Gana 3:2.
+        // 4. Verificamos.
         // Tenía 400. Recupera su apuesta (100) + gana 150 (1.5 * 100).
         // Total = 400 + 100 + 150 = 650
         assertEquals(650.0, jugador1.getSaldo());
@@ -108,12 +106,11 @@ class RondaTest {
         participante1.getMano().addCarta(diezCorazones);
 
         // 3. Jugador divide
-        ronda.jugadorDivide(); // Asumo que esto detecta al participante
+        ronda.jugadorDivide();
 
         // Bankroll ahora es 300 (500 - 100 apuesta1 - 100 apuesta2)
         assertEquals(300.0, jugador1.getSaldo());
 
-        // Asumo que participante ahora tiene 2 manos.
         // Mano 1: [10], Mano 2: [10]
 
         // 4. Forzamos carta de la Mano 1
@@ -133,7 +130,7 @@ class RondaTest {
         ronda.getParticipantesActivosFinalRonda().add(participante1); //lo agrego a la lista final
         ronda.finDeRonda();
 
-        // 10. Verificamos pagos:
+
         // Mano 1 (21): Gana normal. Recupera 100 + gana 100 = 200
         // Mano 2 (15): Pierde contra 17. Recupera 0.
         // Total Bankroll = 300 (después de apostar) + 200 (pago mano 1) = 500

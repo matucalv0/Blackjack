@@ -24,8 +24,7 @@ class ManoTest {
     void setUp() {
         mano = new Mano();
 
-        // Asumo que la clase Carta se inicializa así. 
-        // ¡Adapta esto a tu constructor!
+
         asPicas = new Carta(1, Palo.PICAS);
         reyPicas = new Carta(13, Palo.PICAS);
         cincoPicas = new Carta(5, Palo.PICAS);
@@ -83,7 +82,7 @@ class ManoTest {
         mano.addCarta(cincoPicas);  // 5
         // Total 22
         assertEquals(22, mano.puntaje());
-        assertTrue(mano.sePaso()); // Asumo que tienes este método
+        assertTrue(mano.sePaso());
     }
 
     @Test
@@ -91,6 +90,6 @@ class ManoTest {
         mano.addCarta(asPicas);
         mano.addCarta(reyPicas);
         assertEquals(21, mano.puntaje());
-        assertTrue(mano.esBlackjack()); // Asumo que tienes este método
+        assertTrue(mano.esBlackjack());
     }
 }
