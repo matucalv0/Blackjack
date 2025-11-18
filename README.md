@@ -4,13 +4,13 @@ Este proyecto es una implementación del clásico juego de cartas Blackjack (o 2
 
 El objetivo principal no es solo crear el juego, sino diseñar un sistema robusto, mantenible y escalable, aplicando patrones de diseño fundamentales como **MVC (Modelo-Vista-Controlador)** y **Observer**.
 
-## 📌 Estado Actual: Aplicación de Consola
+##  Estado Actual: Aplicación de Consola
 
 Actualmente, el proyecto es una **aplicación de consola** completamente funcional.
 
 Toda la lógica del negocio (el "Modelo") está 100% desacoplada de la interfaz de usuario (la "Vista"). Esto significa que el Modelo no tiene idea de que existe una consola; simplemente envía notificaciones de eventos (como `CARTA_REPARTIDA` o `FIN_RONDA`) gracias al patrón Observer.
 
-## 💻 Tecnologías y Patrones Clave
+##  Tecnologías y Patrones Clave
 
 * **Lenguaje:** Java
 * **Patrones de Diseño:**
@@ -18,7 +18,7 @@ Toda la lógica del negocio (el "Modelo") está 100% desacoplada de la interfaz 
     * **Observador (Observer):** Utilizado para que el Modelo notifique a la Vista de cualquier cambio de estado sin acoplarse a ella.
     * **Principio de Responsabilidad Única (SRP):** Cada clase (como `Mano`, `Bankroll`, `Ronda`) tiene una única y clara responsabilidad.
 
-## 🏛️ Arquitectura del Modelo
+##  Arquitectura del Modelo
 
 * `Partida` y `Ronda`: Actúan como los "Sujetos" (Observables) principales, orquestando el flujo del juego.
 * Aclarar la diferencia entre `Jugador` y `Participante`. Jugador se refiere a la persona, Participante al rol de una persona en una mesa. Esto permite gestionar mejor el bankroll de un jugador.
@@ -28,7 +28,7 @@ Toda la lógica del negocio (el "Modelo") está 100% desacoplada de la interfaz 
 
 <img width="1559" height="1765" alt="umlFinal" src="https://github.com/user-attachments/assets/d39f3577-7c92-40b3-866a-4a0dee7d54ab" />
 
-## 📸 Screenshots de la Aplicación (Versión de Consola)
+##  Screenshots de la Aplicación (Versión de Consola)
 
 A continuación, se muestran algunas capturas de pantalla del flujo principal del juego en su implementación actual por consola:
 
@@ -43,7 +43,7 @@ A continuación, se muestran algunas capturas de pantalla del flujo principal de
 <img width="735" height="670" alt="juego3" src="https://github.com/user-attachments/assets/ac492d26-4cf4-4ea9-ad70-4cc09c8d72ce" />
 
 
-## 🚀 Cómo Ejecutar
+##  Cómo Ejecutar
 
 1.  Clona este repositorio:
     ```bash
@@ -56,7 +56,7 @@ A continuación, se muestran algunas capturas de pantalla del flujo principal de
 3.  Compila y ejecuta la aplicación:
     *Ejecutar la clase `BlackjackApp.java` desde tu IDE favorito*
 
-## 🛣️ Roadmap y Futuras Implementaciones
+##  Futuras Implementaciones
 
 El diseño actual se construyó para permitir las siguientes mejoras:
 
