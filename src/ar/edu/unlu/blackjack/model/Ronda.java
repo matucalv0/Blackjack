@@ -58,9 +58,10 @@ public class Ronda implements Observable {
         pagarDivision();
         gestionBlackjack();
         evaluarGanadores();
+        notificar(EVENTO_RONDA.RONDA_TERMINADA);
         participantesActivosFinalRonda.clear();
         colaTurnos.clear();
-        notificar(EVENTO_RONDA.RONDA_TERMINADA);
+
 
     }
 
@@ -70,7 +71,6 @@ public class Ronda implements Observable {
         while(crupier.puntajeActual() < 17){
             crupier.agregarCarta(mazo.repartirCarta());
         }
-
         notificar(EVENTO_RONDA.CRUPIER_JUEGA);
     }
 
@@ -257,6 +257,10 @@ public class Ronda implements Observable {
         ArrayList<Carta> cartas = participante.getMano().getCartas();
 
         if (cartas.size() != 2){
+            return false;
+        }
+
+        if (Double.compare(participante.getSaldoJugador(), participante.getApuesta().getMonto()) < 0){  //no puede dividir porque no puede doblar la apuesta
             return false;
         }
 

@@ -32,6 +32,7 @@ public class ControladorConsola implements Observador {
                     iniciarRonda();
                     break;
                 case "0":
+                    vistaConsola.limpiarConsola();
                     vistaConsola.mostrarMensaje("Hasta luego!");
                     return;
                 default:
@@ -53,6 +54,8 @@ public class ControladorConsola implements Observador {
 
                 switch (opcion) {
                     case "1":
+                        vistaConsola.limpiarConsola();
+                        vistaConsola.mostrarDatos(participante);
                         String apuesta = vistaConsola.solicitarDato("apuesta");
                         if (verificarApuesta(participante, apuesta)) {
                             modeloPartida.recibirApuesta(participante, Double.parseDouble(apuesta));
@@ -62,7 +65,7 @@ public class ControladorConsola implements Observador {
                         }
                         break;
                     case "2":
-                        vistaConsola.mostrarMensaje("El jugador " + participante.getNombre() + " pasó");
+                        vistaConsola.mostrarMensaje("El jugador " + participante.getNombre() + " no participa de la ronda");
                         accionValida = true;
                         break;
                     default:
@@ -75,9 +78,12 @@ public class ControladorConsola implements Observador {
 
 
     public boolean verificarApuesta(Participante participante, String apuesta){
+        if (!apuesta.matches("\\d+")){
+            return false;
+        }
         double apuestaAux = Double.parseDouble(apuesta);
 
-        return (apuestaAux <= participante.getSaldoJugador()) && apuestaAux > 0;
+        return ((apuestaAux <= participante.getSaldoJugador()) && apuestaAux > 0);
 
 
     }
@@ -137,16 +143,18 @@ public class ControladorConsola implements Observador {
 
     public void faseFinal(){
         modeloRonda.faseCrupier();
-
     }
 
-    public void iniciarRonda() throws AccionNoPermitidaExcepcion {
+    public void iniciarRonda() {
         while (true){
+            vistaConsola.esperarEnter();
+            vistaConsola.limpiarConsola();
             vistaConsola.vistaMesa(modeloPartida.getListaParticipantes(), modeloRonda.getCrupier());
             String opcion = vistaConsola.solicitarDato("opcion");
             switch (opcion) {
                 case "0" -> {
                     vistaConsola.mostrarMensaje("Saliendo de la mesa....");
+                    vistaConsola.limpiarConsola();
                     return;
                 }
                 case "1" -> {
@@ -166,6 +174,7 @@ public class ControladorConsola implements Observador {
 
 
     public void unirJugador() {
+        vistaConsola.limpiarConsola();
         String usuario = vistaConsola.solicitarDato("usuario");
         if(verificarUsuario(usuario)){
             for (Participante participante: modeloPartida.getListaParticipantes()){
@@ -174,10 +183,25 @@ public class ControladorConsola implements Observador {
                     return;
                 }
             }
-            Jugador nuevoJugador = new Jugador(usuario);
-            nuevoJugador.agregarDinero(Double.parseDouble(vistaConsola.solicitarDato("dinero: ")));
-            modeloPartida.jugadorSeUne(nuevoJugador);
+            vistaConsola.limpiarConsola();
+            String dinero = vistaConsola.solicitarDato("dinero: ");
+            if(verificarDinero(dinero)){
+                Jugador nuevoJugador = new Jugador(usuario);
+                nuevoJugador.agregarDinero(Double.parseDouble(dinero));
+                modeloPartida.jugadorSeUne(nuevoJugador);
+            }
+
         }
+    }
+
+    public boolean verificarDinero(String dinero){
+        if (Double.parseDouble(dinero) <= 0){
+            vistaConsola.mostrarMensaje("Debe ingresar un monto mayor a 0");
+            return false;
+        }
+
+        return true;
+
     }
 
     public boolean verificarUsuario(String usuario) {
@@ -237,7 +261,10 @@ public class ControladorConsola implements Observador {
             case EVENTO_RONDA.JUGADOR_SE_PLANTA -> vistaConsola.mostrarMensaje("Jugador se plantó");
             case EVENTO_RONDA.CRUPIER_JUEGA -> vistaConsola.mostrarManoCrupier(modeloRonda.getCrupier());
             case EVENTO_RONDA.BANCA_GANA -> vistaConsola.mostrarMensaje("La banca gana. ");
-            case EVENTO_RONDA.RONDA_TERMINADA -> vistaConsola.mostrarJugadoresFinales(modeloRonda.getParticipantesActivosFinalRonda());
+            case EVENTO_RONDA.RONDA_TERMINADA ->{
+                vistaConsola.mostrarMensaje("Fin de ronda..");
+                vistaConsola.mostrarJugadoresFinales(modeloRonda.getParticipantesActivosFinalRonda());
+            }
             default -> throw new IllegalStateException("Unexpected value: " + o);
         }
 
