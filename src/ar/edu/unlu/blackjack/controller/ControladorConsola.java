@@ -29,7 +29,11 @@ public class ControladorConsola implements Observador {
                     unirJugador();
                     break;
                 case "2":
-                    iniciarRonda();
+                    if (!modeloPartida.getListaParticipantes().isEmpty()){
+                        iniciarRonda();
+                    } else {
+                        vistaConsola.mostrarMensaje("No hay jugadores");
+                    }
                     break;
                 case "0":
                     vistaConsola.limpiarConsola();
