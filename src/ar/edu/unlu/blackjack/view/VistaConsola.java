@@ -24,6 +24,15 @@ public class VistaConsola {
         System.out.println("0. Salir");
     }
 
+    public void loginExtendido(){
+        System.out.println("---------- REGISTRO JUGADORES ---------");
+        System.out.println("1. Ingresar usuario ");
+        System.out.println("2. Ir a la mesa");
+        System.out.println("3. Ingresar dinero");
+        System.out.println("0. Salir");
+
+    }
+
 
 
     public void vistaMesa(ArrayList<Participante> jugadores, Crupier crupier){

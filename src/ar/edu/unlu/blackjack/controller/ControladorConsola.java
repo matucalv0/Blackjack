@@ -6,6 +6,8 @@ import ar.edu.unlu.blackjack.observer.Observador;
 import ar.edu.unlu.blackjack.view.VistaConsola;
 import ar.edu.unlu.model.excepciones.AccionNoPermitidaExcepcion;
 
+import java.util.ArrayList;
+
 public class ControladorConsola implements Observador {
     private Partida modeloPartida;
     private Ronda modeloRonda;
@@ -22,7 +24,12 @@ public class ControladorConsola implements Observador {
 
     public void loguearse() {
         while (true){
-            vistaConsola.login();
+            if (modeloPartida.getListaParticipantes().isEmpty()){
+                vistaConsola.login();
+            } else {
+                vistaConsola.loginExtendido();
+            }
+
             String opcion = vistaConsola.solicitarDato("opcion");
             switch (opcion){
                 case "1":
@@ -34,6 +41,9 @@ public class ControladorConsola implements Observador {
                     } else {
                         vistaConsola.mostrarMensaje("No hay jugadores");
                     }
+                    break;
+                case "3":
+                    ingresarDinero();
                     break;
                 case "0":
                     vistaConsola.limpiarConsola();
@@ -198,6 +208,42 @@ public class ControladorConsola implements Observador {
         }
     }
 
+    public void ingresarDinero(){
+        String usuario = vistaConsola.solicitarDato("usuario: ");
+
+        if (!verificarUsuario(usuario)){
+            vistaConsola.mostrarMensaje("Usuario no valido!");
+            return;
+        }
+
+
+        Participante participante = buscarJugador(usuario);
+
+        if (participante == null){
+            vistaConsola.mostrarMensaje("Jugador no encontrado");
+        } else {
+            String dinero = vistaConsola.solicitarDato("dinero: ");
+
+            if (!verificarDinero(dinero)){
+                vistaConsola.mostrarMensaje("Dinero no valido");
+                return;
+            }
+            participante.sumarBanca(Double.parseDouble(dinero));
+        }
+
+    }
+
+    public Participante buscarJugador(String usuario){
+        for(Participante participante: modeloPartida.getListaParticipantes()){
+            if (participante.getNombre().equals(usuario)){
+                return participante;
+            }
+        }
+        return null;
+    }
+
+
+
     public boolean verificarDinero(String dinero){
         if (Double.parseDouble(dinero) <= 0){
             vistaConsola.mostrarMensaje("Debe ingresar un monto mayor a 0");
@@ -236,9 +282,7 @@ public class ControladorConsola implements Observador {
 
 
 
-    public void ingresarDinero(Participante participante){
-        participante.sumarBanca(Double.parseDouble(vistaConsola.solicitarDato("dinero: ")));
-    }
+
 
 
 

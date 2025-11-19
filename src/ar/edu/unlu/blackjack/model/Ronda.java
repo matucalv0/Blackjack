@@ -77,7 +77,7 @@ public class Ronda implements Observable {
 
     public void participanteSePaso(){
         if (participanteConTurno().getMano().sePaso()){
-            colaTurnos.poll();
+            notificar(colaTurnos.poll());
         }
     }
 
