@@ -62,9 +62,10 @@ A continuación, se muestran algunas capturas de pantalla del flujo principal de
 
 El diseño actual se construyó para permitir las siguientes mejoras:
 
-* [**Próximo Paso**] **Implementación de Interfaz Gráfica (GUI):**
+* [**Próximo Paso**] **Implementación de Interfaz Gráfica (GUI) y Persistencia:**
     * El siguiente objetivo es sumarle otra vista, una interfaz gráfica (usando JavaFX).
     * Gracias al patrón Observer, la nueva vista gráfica solo necesitará registrarse como un `Observador` más, y recibirá los mismos eventos que la consola, sin necesidad de modificar nada del Modelo.
+    * Tambien se realizará persistencia sobre los objetos que fueran necesarios. 
 
 * [**A Futuro**] **Implementación en Red (Multijugador):**
     * El diseño también contempla una futura implementación en red.
