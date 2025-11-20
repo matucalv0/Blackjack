@@ -27,6 +27,8 @@ Toda la lógica del negocio (el "Modelo") está 100% desacoplada de la interfaz 
 
 
 <img width="1559" height="1765" alt="umlFinal" src="https://github.com/user-attachments/assets/d39f3577-7c92-40b3-866a-4a0dee7d54ab" />
+<img width="842" height="740" alt="umlExtension" src="https://github.com/user-attachments/assets/905d9786-ca96-478e-97c0-d58157a27438" />
+
 
 ##  Screenshots de la Aplicación (Versión de Consola)
 
