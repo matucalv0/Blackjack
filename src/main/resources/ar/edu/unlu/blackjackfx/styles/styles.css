@@ -1,0 +1,129 @@
+/* =======================
+   Fondo general (ventana principal)
+   ======================= */
+.fondo {
+    -fx-background-image: url('../images/Selenium.jpg');
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+/* =======================
+   Fondo para cualquier DialogPane
+   ======================= */
+.dialog-pane {
+    -fx-background-image: url('../images/Selenium.jpg');
+}
+
+/* =======================
+   Botones estilo cristal
+   ======================= */
+.boton-cristal {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1px;
+
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-cursor: hand;
+    -fx-padding: 8 25;
+}
+
+.boton-cristal:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2);
+}
+
+.boton-cristal:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* =======================
+   Estilo del Dialog personalizado
+   ======================= */
+.dialog-cristal {
+    -fx-background-color: rgba(0,0,0,0.6);
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 20;
+}
+
+/* ------ Header (PARTE QUE QUEDABA BLANCA) ------ */
+.dialog-cristal > .header-panel {
+    -fx-background-color: rgba(0,0,0,0.6);   /* mismo color que el fondo */
+    -fx-background-radius: 20 20 0 0;
+}
+
+/* ------ Contenido interno (texto del mensaje) ------ */
+.dialog-cristal .content {
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+}
+
+/* ------ TextField del TextInputDialog ------ */
+.dialog-cristal .text-field {
+    -fx-background-color: rgba(255,255,255,0.15);
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 8 12;
+}
+
+/* ------ Botones OK / Cancel ------ */
+.dialog-cristal .button {
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: rgba(255,255,255,0.3);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+}
+
+.dialog-cristal .button:hover {
+    -fx-background-color: rgba(255,255,255,0.2);
+}
+
+.dialog-cristal .button:pressed {
+    -fx-background-color: rgba(255,255,255,0.05);
+}
+
+
+/* El contenedor general de la lista */
+.list-view {
+    -fx-background-color: transparent; /* Fondo transparente */
+    -fx-border-color: transparent;     /* Sin bordes */
+    -fx-background-insets: 0;
+    -fx-padding: 10px;
+}
+
+/* Cada fila (cada jugador) */
+.list-cell {
+    -fx-background-color: rgba(0, 0, 0, 0.5); /* Negro semitransparente */
+    -fx-text-fill: #e0e0e0;        /* Texto gris claro/blanco */
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-padding: 10px;             /* Espacio interno para que respire */
+    -fx-border-color: transparent transparent #444444 transparent; /* Linea separadora sutil abajo */
+    -fx-alignment: CENTER-LEFT;
+}
+
+/* Cuando seleccionas una fila */
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #D4AF37; /* Dorado estilo casino */
+    -fx-text-fill: black;
+}
+
+/* Fila vacía (para que no se vea blanco el fondo sobrante) */
+.list-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.list-view .scroll-bar:vertical {
+    -fx-opacity: 0; /* La hace invisible pero sigue funcionando con la rueda del mouse */
+    -fx-padding: 0;
+}
+

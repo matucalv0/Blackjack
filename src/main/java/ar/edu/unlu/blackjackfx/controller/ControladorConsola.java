@@ -5,8 +5,6 @@ import ar.edu.unlu.blackjackfx.model.*;
 import ar.edu.unlu.blackjackfx.observer.Observador;
 import ar.edu.unlu.blackjackfx.view.VistaConsola;
 
-import java.util.ArrayList;
-
 public class ControladorConsola implements Observador {
     private Partida modeloPartida;
     private Ronda modeloRonda;
@@ -287,8 +285,8 @@ public class ControladorConsola implements Observador {
 
 
     @Override
-    public void actualizar(Object o) {
-        switch (o) {
+    public void actualizar(Object evento, Object data) {
+        switch (evento) {
             case EVENTO_PARTIDA.JUGADOR_UNIDO -> {
                 vistaConsola.limpiarConsola();
                 vistaConsola.mostrarMensaje("Jugador se unió");
@@ -312,7 +310,7 @@ public class ControladorConsola implements Observador {
                 vistaConsola.mostrarMensaje("Fin de ronda..");
                 vistaConsola.mostrarJugadoresFinales(modeloRonda.getParticipantesActivosFinalRonda());
             }
-            default -> throw new IllegalStateException("Unexpected value: " + o);
+            default -> throw new IllegalStateException("Unexpected value: " + evento);
         }
 
 

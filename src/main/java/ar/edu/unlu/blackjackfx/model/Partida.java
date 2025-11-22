@@ -16,7 +16,7 @@ public class Partida implements Observable {
 
     public void jugadorSeUne(Jugador jugador){
         participantes.add(new Participante(jugador));
-        notificar(EVENTO_PARTIDA.JUGADOR_UNIDO);
+        notificar(EVENTO_PARTIDA.JUGADOR_UNIDO, jugador);
     }
 
     public void limpiarManos(){
@@ -35,7 +35,7 @@ public class Partida implements Observable {
 
         ronda.agregarJugadorRonda(participante);
 
-        notificar(EVENTO_PARTIDA.APUESTA_RECIBIDA);
+        notificar(EVENTO_PARTIDA.APUESTA_RECIBIDA, null);
 
     }
 
@@ -62,9 +62,9 @@ public class Partida implements Observable {
     }
 
     @Override
-    public void notificar(Object o) {
+    public void notificar(Object evento, Object data) {
         for (Observador observador: observadores){
-            observador.actualizar(o);
+            observador.actualizar(evento, data);
         }
     }
 }

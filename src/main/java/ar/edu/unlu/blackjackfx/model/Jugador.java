@@ -26,4 +26,11 @@ public class Jugador  {
     public Bankroll getBanca(){
         return banca;
     }
+
+    @Override
+    public String toString() {
+        return "Jugador " + nombre +
+                " | dinero: " + banca;
+
+    }
 }

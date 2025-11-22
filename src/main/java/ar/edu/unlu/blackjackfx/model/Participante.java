@@ -55,4 +55,9 @@ public class Participante extends ParticipanteBase {
         jugador.getBanca().restarDinero(n);
     }
 
+    @Override
+    public String toString() {
+        return "" + jugador;
+
+    }
 }

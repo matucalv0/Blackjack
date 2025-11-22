@@ -58,7 +58,7 @@ public class Ronda implements Observable {
         pagarDivision();
         gestionBlackjack();
         evaluarGanadores();
-        notificar(EVENTO_RONDA.RONDA_TERMINADA);
+        notificar(EVENTO_RONDA.RONDA_TERMINADA, null);
         participantesActivosFinalRonda.clear();
         colaTurnos.clear();
 
@@ -71,13 +71,13 @@ public class Ronda implements Observable {
         while(crupier.puntajeActual() < 17){
             crupier.agregarCarta(mazo.repartirCarta());
         }
-        notificar(EVENTO_RONDA.CRUPIER_JUEGA);
+        notificar(EVENTO_RONDA.CRUPIER_JUEGA, null );
     }
 
 
     public void participanteSePaso(){
         if (participanteConTurno().getMano().sePaso()){
-            notificar(colaTurnos.poll());
+            notificar(colaTurnos.poll(), null );
         }
     }
 
@@ -93,13 +93,13 @@ public class Ronda implements Observable {
         if (participante.getMano().sePaso()){
             if ((participante.getManos().size() > 1) && (participante.manoActual == 0)){  //si dividio y es la mano 1, incrementa el indice
                 participante.incrementarIndiceMano();
-                notificar(EVENTO_RONDA.JUGADOR_SE_PASA);
+                notificar(EVENTO_RONDA.JUGADOR_SE_PASA, null );
                 return;
             }
-            notificar(EVENTO_RONDA.JUGADOR_SE_PASA);
+            notificar(EVENTO_RONDA.JUGADOR_SE_PASA, null);
             participanteSePaso();
         } else {
-            notificar(EVENTO_RONDA.CARTA_REPARTIDA);
+            notificar(EVENTO_RONDA.CARTA_REPARTIDA, null);
         }
 
 
@@ -200,12 +200,12 @@ public class Ronda implements Observable {
         Participante participante = participanteConTurno();
         if ((participante.getManos().size() > 1) && (participante.manoActual == 0)) {  //si dividio y es la mano 1, incrementa el indice
             participante.incrementarIndiceMano();
-            notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA);
+            notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA, null);
             return;
         }
 
         participantesActivosFinalRonda.add(colaTurnos.poll());
-        notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA);
+        notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA,null );
     }
 
     public Participante participanteConTurno(){
@@ -231,7 +231,7 @@ public class Ronda implements Observable {
             participante.agregarCarta(mazo.repartirCarta());
         }
 
-        notificar(EVENTO_PARTIDA.PARTIDA_INICIADA);
+        notificar(EVENTO_PARTIDA.PARTIDA_INICIADA, null);
 
     }
 
@@ -249,7 +249,7 @@ public class Ronda implements Observable {
         Participante participante = participanteConTurno();
         participante.doblarApuesta();
         dividirMano();
-        notificar(EVENTO_RONDA.MANO_DIVIDIDA);
+        notificar(EVENTO_RONDA.MANO_DIVIDIDA, null);
     }
 
     public boolean verificarDividir(){
@@ -297,9 +297,9 @@ public class Ronda implements Observable {
     }
 
     @Override
-    public void notificar(Object o) {
+    public void notificar(Object evento, Object data) {
         for (Observador observador: observadores){
-            observador.actualizar(o);
+            observador.actualizar(evento, data);
         }
 
     }

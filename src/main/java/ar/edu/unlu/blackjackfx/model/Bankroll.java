@@ -30,4 +30,9 @@ public class Bankroll {
         this.dinero -= dinero;
     }
 
+    @Override
+    public String toString() {
+        return "" + dinero;
+
+    }
 }
