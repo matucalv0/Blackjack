@@ -33,6 +33,7 @@ import java.util.Optional;
 public class VistaInicio extends VistaGUI {
     private double xOffset = 0;
     private double yOffset = 0;
+    private int turnoMesa = 0;
 
     @FXML
     private HBox titleBar;
@@ -40,6 +41,8 @@ public class VistaInicio extends VistaGUI {
     private ListView<String> listaJugadores;
     @FXML
     private Label lbList;
+    @FXML
+    Button btnIniciar;
 
 
     public VistaInicio(BlackjackAppGUI app) {
@@ -54,6 +57,14 @@ public class VistaInicio extends VistaGUI {
 
     }
 
+    public void resetTurnoMesa(){
+        turnoMesa = 0;
+    }
+
+    public void turnoSiguienteMesa(){
+        turnoMesa++;
+    }
+
     public void agregarJugador(ArrayList<Participante> jugadores) {
         Platform.runLater(() -> {
             ObservableList items = FXCollections.observableArrayList();
@@ -65,6 +76,7 @@ public class VistaInicio extends VistaGUI {
 
 
         if (!listaJugadores.isVisible()){
+            btnIniciar.setVisible(true);
             lbList.setVisible(true);
             listaJugadores.setVisible(true);
             listaJugadores.setManaged(true);
@@ -94,9 +106,12 @@ public class VistaInicio extends VistaGUI {
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 900, 800);
 
+
+
         // Creamos el Stage y mostramos la ventana
         Stage stage = new Stage();
         stage.setScene(scene);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("Mesa de Blackjack");
         stage.show();
     }
@@ -104,6 +119,10 @@ public class VistaInicio extends VistaGUI {
 
     @FXML
     private void ingresarUsuario() {
+        if (!controlador.verificarCantidadJugadores()){
+            return;
+        }
+
         String nombre = pedirTexto("Ingrese usuario");
         if (nombre == null || nombre.isBlank()) return;
 
@@ -116,11 +135,6 @@ public class VistaInicio extends VistaGUI {
         } catch (NumberFormatException e) {
             mostrarAlerta("Error", "El valor ingresado no es un número válido.");
         }
-    }
-
-    @FXML
-    private void mostrarJugadorUnido(Jugador jugador){
-
     }
 
 

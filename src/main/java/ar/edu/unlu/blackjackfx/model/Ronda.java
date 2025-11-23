@@ -231,7 +231,7 @@ public class Ronda implements Observable {
             participante.agregarCarta(mazo.repartirCarta());
         }
 
-        notificar(EVENTO_PARTIDA.PARTIDA_INICIADA, null);
+        notificar(EVENTO_PARTIDA.PARTIDA_INICIADA, colaTurnos);
 
     }
 

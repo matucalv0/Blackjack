@@ -1,19 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="mesa" stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
-      <HBox prefHeight="95.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+      <HBox fx:id="zonaJugador" alignment="CENTER" prefHeight="95.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="184.0" HBox.hgrow="NEVER">
+               <children>
+                  <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="294.0" spacing="70.0" VBox.vgrow="NEVER">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <children>
+                        <HBox fx:id="fichas" alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="NEVER">
+                           <children>
+                              <Button fx:id="btn50" mnemonicParsing="false" onAction="#apuesta50" styleClass="ficha50" stylesheets="@styles/styles.css" text="50" textFill="TRANSPARENT" HBox.hgrow="NEVER" />
+                              <Button fx:id="btn100" mnemonicParsing="false" onAction="#apuesta100" styleClass="ficha100" stylesheets="@styles/styles.css" text="100" textFill="TRANSPARENT" HBox.hgrow="NEVER" />
+                              <Button fx:id="btn200" mnemonicParsing="false" onAction="#apuesta200" styleClass="ficha200" stylesheets="@styles/styles.css" text="250" textFill="TRANSPARENT" HBox.hgrow="NEVER" />
+                              <Button fx:id="btn500" mnemonicParsing="false" onAction="#apuesta500" styleClass="ficha500" text="500" textFill="TRANSPARENT" HBox.hgrow="NEVER" />
+                              <Button fx:id="btn1000" mnemonicParsing="false" onAction="#apuesta1000" styleClass="ficha1000" stylesheets="@styles/styles.css" text="1000" textFill="TRANSPARENT" HBox.hgrow="NEVER" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets bottom="20.0" />
+                           </HBox.margin>
+                        </HBox>
+                        <VBox fx:id="infoJugador" minHeight="-Infinity" minWidth="-Infinity" prefHeight="79.0" prefWidth="169.0" styleClass="info-jugador">
+                           <HBox.margin>
+                              <Insets bottom="30.0" right="150.0" />
+                           </HBox.margin>
+                           <children>
+                              <Label fx:id="lblNombre" text="Nombre jugador" />
+                              <Label fx:id="lblApuesta" prefHeight="28.0" prefWidth="201.0" text="\$50000">
+                                 <VBox.margin>
+                                    <Insets left="45.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="infoJugadorSaldo" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="131.0" styleClass="info-jugador" stylesheets="@styles/styles.css">
+                           <children>
+                              <Label fx:id="lblSaldo" text="Saldo: $0" />
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="30.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+         </children></HBox>
    </bottom>
    <top>
-      <HBox prefHeight="95.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+      <HBox fx:id="zonaCrupier" prefHeight="95.0" prefWidth="600.0" BorderPane.alignment="TOP_LEFT">
+         <children>
+            <ImageView fitHeight="20.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+               <image>
+                  <Image url="@images/playing-cards.png" />
+               </image></ImageView>
+         </children></HBox>
    </top>
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <StackPane prefHeight="150.0" prefWidth="200.0" />
+            <StackPane fx:id="mesaJugador" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Arc fill="#3b0f0f00" length="180.0" radiusX="316.0" radiusY="472.0" startAngle="180.0" stroke="#09281e" strokeType="INSIDE" strokeWidth="3.0">
+                     <StackPane.margin>
+                        <Insets top="50.0" />
+                     </StackPane.margin>
+                  </Arc>
+               </children></StackPane>
          </children>
       </VBox>
    </center>

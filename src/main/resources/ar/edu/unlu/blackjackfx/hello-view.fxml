@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="600.0" styleClass="fondo" stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="600.0" styleClass="mesa" stylesheets="@styles/styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
          <children>
@@ -17,9 +17,9 @@
                   <URL value="@styles/styles.css" />
                   <URL value="@styles/styles.css" />
                </stylesheets></Button>
-            <Button fx:id="btnIniciar" mnemonicParsing="false" onAction="#iniciarMesa" styleClass="boton-cristal" stylesheets="@styles/styles.css" text="Ir a la mesa" />
             <Button fx:id="btnSalir" mnemonicParsing="false" onAction="#salirAplicacion" styleClass="boton-cristal" stylesheets="@styles/styles.css" text="Salir" />
-            <Label fx:id="lbList" text="Jugadores en la mesa">
+            <Button fx:id="btnIniciar" mnemonicParsing="false" onAction="#iniciarMesa" styleClass="boton-cristal" stylesheets="@styles/styles.css" text="Ir a la mesa" visible="false" />
+            <Label fx:id="lbList" text="Jugadores en la mesa" textFill="#060d04">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>

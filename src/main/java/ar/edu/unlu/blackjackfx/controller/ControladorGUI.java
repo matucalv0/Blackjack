@@ -1,9 +1,6 @@
 package ar.edu.unlu.blackjackfx.controller;
 
-import ar.edu.unlu.blackjackfx.model.EVENTO_PARTIDA;
-import ar.edu.unlu.blackjackfx.model.Jugador;
-import ar.edu.unlu.blackjackfx.model.Partida;
-import ar.edu.unlu.blackjackfx.model.Ronda;
+import ar.edu.unlu.blackjackfx.model.*;
 import ar.edu.unlu.blackjackfx.observer.Observador;
 import ar.edu.unlu.blackjackfx.view.VistaGUI;
 import ar.edu.unlu.blackjackfx.view.VistaInicio;
@@ -30,6 +27,21 @@ public class ControladorGUI implements Observador{
         modeloPartida.jugadorSeUne(nuevoJugador);
     }
 
+    public void recibirApuesta(int apuesta, int jugador){
+        Participante participante = modeloPartida.getListaParticipantes().get(jugador);
+        if (apuesta > participante.getSaldoJugador()){
+            return;
+        }
+
+        modeloPartida.sumarApuesta(participante, apuesta);
+    }
+
+    public boolean verificarCantidadJugadores(){
+        return modeloPartida.getListaParticipantes().size() < 4;
+    }
+
+
+
     @Override
     public void actualizar(Object evento, Object data) {
         switch (evento) {
@@ -41,6 +53,14 @@ public class ControladorGUI implements Observador{
                 }
 
             }
+            case EVENTO_PARTIDA.APUESTA_RECIBIDA -> {
+                if (vista instanceof VistaMesa){
+                    ((VistaMesa) vista).mostrarJugadorConTurno(modeloPartida.getListaParticipantes().get(((VistaMesa) vista).getTurnoMesa()));
+                }
+            }
+
+
+
             default -> throw new IllegalStateException("Unexpected value: " + evento);
         }
 

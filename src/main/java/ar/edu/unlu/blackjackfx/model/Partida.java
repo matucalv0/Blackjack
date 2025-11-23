@@ -19,6 +19,13 @@ public class Partida implements Observable {
         notificar(EVENTO_PARTIDA.JUGADOR_UNIDO, jugador);
     }
 
+    public void sumarApuesta(Participante participante, int monto){
+        participante.getApuesta().sumar(monto);
+        participante.restarBanca(monto);
+        notificar(EVENTO_PARTIDA.APUESTA_RECIBIDA, null);
+
+    }
+
     public void limpiarManos(){
         ronda.limpiarManoCrupier();
         for(Participante participante: participantes){
