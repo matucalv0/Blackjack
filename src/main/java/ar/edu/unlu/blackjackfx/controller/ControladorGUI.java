@@ -33,11 +33,18 @@ public class ControladorGUI implements Observador{
             return;
         }
 
+
         modeloPartida.sumarApuesta(participante, apuesta);
     }
 
     public boolean verificarCantidadJugadores(){
         return modeloPartida.getListaParticipantes().size() < 4;
+    }
+
+
+    public void jugadorApuesta(int turno){
+        modeloPartida.recibirApuesta(modeloPartida.getListaParticipantes().get(turno));
+
     }
 
 
@@ -58,6 +65,7 @@ public class ControladorGUI implements Observador{
                     ((VistaMesa) vista).mostrarJugadorConTurno(modeloPartida.getListaParticipantes().get(((VistaMesa) vista).getTurnoMesa()));
                 }
             }
+
 
 
 

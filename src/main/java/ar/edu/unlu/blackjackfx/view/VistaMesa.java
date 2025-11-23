@@ -3,13 +3,16 @@ package ar.edu.unlu.blackjackfx.view;
 import ar.edu.unlu.blackjackfx.BlackjackAppGUI;
 import ar.edu.unlu.blackjackfx.model.Apuesta;
 import ar.edu.unlu.blackjackfx.model.Participante;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class VistaMesa extends VistaGUI {
     private int turnoMesa = 0;
+    private boolean primerClickApuesta = false;
 
     @FXML
     Button btn50;
@@ -21,6 +24,8 @@ public class VistaMesa extends VistaGUI {
     Label lblApuesta;
     @FXML
     Label lblSaldo;
+    @FXML
+    Button btnApostar;
 
 
     public VistaMesa(BlackjackAppGUI app) {
@@ -34,24 +39,58 @@ public class VistaMesa extends VistaGUI {
         mostrarJugadorConTurno(app.getModeloPartida().getListaParticipantes().getFirst());
     }
 
+
+    public void apostar(){
+        controlador.jugadorApuesta(turnoMesa++);  //aumenta el turno despues de que el jugador apuesta
+
+    }
+
+
     public void apuesta50(){
+        if (!primerClickApuesta){
+            btnApostar.setVisible(true);
+            transicion(btnApostar);
+            primerClickApuesta = true;
+        }
         controlador.recibirApuesta(50, turnoMesa);
     }
 
     public void apuesta100(){
+        if (!primerClickApuesta){
+            btnApostar.setVisible(true);
+            transicion(btnApostar);
+            primerClickApuesta = true;
+        }
         controlador.recibirApuesta(100, turnoMesa);
+
+
     }
 
     public void apuesta200(){
+        if (!primerClickApuesta){
+            btnApostar.setVisible(true);
+            transicion(btnApostar);
+            primerClickApuesta = true;
+        }
         controlador.recibirApuesta(200, turnoMesa);
     }
 
     public void apuesta500(){
+        if (!primerClickApuesta){
+            btnApostar.setVisible(true);
+            transicion(btnApostar);
+            primerClickApuesta = true;
+        }
         controlador.recibirApuesta(500, turnoMesa);
 
     }
 
     public void apuesta1000(){
+        if (!primerClickApuesta){
+            btnApostar.setVisible(true);
+            transicion(btnApostar);
+            primerClickApuesta = true;
+        }
         controlador.recibirApuesta(1000, turnoMesa);
 
     }

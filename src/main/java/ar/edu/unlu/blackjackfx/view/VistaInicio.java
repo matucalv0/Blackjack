@@ -81,10 +81,9 @@ public class VistaInicio extends VistaGUI {
             listaJugadores.setVisible(true);
             listaJugadores.setManaged(true);
 
-            FadeTransition ft = new FadeTransition(Duration.millis(500), listaJugadores);
-            ft.setFromValue(0);
-            ft.setToValue(1);
-            ft.play();
+            transicion(btnIniciar);
+            transicion(listaJugadores);
+            transicion(lbList);
         }
     }
 

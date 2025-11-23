@@ -46,6 +46,14 @@ public class Partida implements Observable {
 
     }
 
+    public void recibirApuesta(Participante participante){
+
+        ronda.agregarJugadorRonda(participante);
+
+        notificar(EVENTO_PARTIDA.APUESTA_RECIBIDA, null);
+
+    }
+
 
 
     public ArrayList<Participante> getListaParticipantes(){

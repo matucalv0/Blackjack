@@ -85,6 +85,11 @@
                      </StackPane.margin>
                   </Arc>
                </children></StackPane>
+            <Button fx:id="btnApostar" mnemonicParsing="false" onAction="#apostar" styleClass="boton-cristal" stylesheets="@styles/styles.css" text="Apostar" visible="false">
+               <VBox.margin>
+                  <Insets left="395.0" top="20.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
    </center>

@@ -1,6 +1,8 @@
 module ar.edu.unlu.blackjackfx {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
+    requires javafx.base;
 
 
     opens ar.edu.unlu.blackjackfx to javafx.fxml;
