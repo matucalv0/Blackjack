@@ -1,9 +1,9 @@
 package ar.edu.unlu.blackjackfx.view;
 
 import ar.edu.unlu.blackjackfx.BlackjackAppGUI;
-import ar.edu.unlu.blackjackfx.controller.ControladorGUI;
+import ar.edu.unlu.blackjackfx.controller.ControladorInicioGUI;
+import ar.edu.unlu.blackjackfx.controller.ControladorMesaGUI;
 
-import ar.edu.unlu.blackjackfx.model.Jugador;
 import ar.edu.unlu.blackjackfx.model.Participante;
 import ar.edu.unlu.blackjackfx.model.Partida;
 import ar.edu.unlu.blackjackfx.model.Ronda;
@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,10 +31,12 @@ import java.util.Optional;
 
 
 
-public class VistaInicio extends VistaGUI {
+public class VistaInicio {
+    private ControladorInicioGUI controlador;
+    private BlackjackAppGUI app;
     private double xOffset = 0;
     private double yOffset = 0;
-    private int turnoMesa = 0;
+
 
     @FXML
     private HBox titleBar;
@@ -46,7 +49,11 @@ public class VistaInicio extends VistaGUI {
 
 
     public VistaInicio(BlackjackAppGUI app) {
-        super(app);
+        this.app = app;
+    }
+
+    public void setControlador(ControladorInicioGUI controlador){
+        this.controlador = controlador;
     }
 
     @FXML
@@ -57,13 +64,6 @@ public class VistaInicio extends VistaGUI {
 
     }
 
-    public void resetTurnoMesa(){
-        turnoMesa = 0;
-    }
-
-    public void turnoSiguienteMesa(){
-        turnoMesa++;
-    }
 
     public void agregarJugador(ArrayList<Participante> jugadores) {
         Platform.runLater(() -> {
@@ -87,6 +87,13 @@ public class VistaInicio extends VistaGUI {
         }
     }
 
+    protected void transicion(Node nodo){
+        FadeTransition ft = new FadeTransition(Duration.millis(500), nodo);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.play();
+    }
+
     @FXML
     private void iniciarMesa() throws IOException {
         // Modelo
@@ -95,8 +102,8 @@ public class VistaInicio extends VistaGUI {
 
         // Vista y controlador MVC
         VistaMesa vistaMesa = new VistaMesa(app);
-        ControladorGUI controladorGUI = new ControladorGUI(modeloPartida, modeloRonda, vistaMesa);
-        vistaMesa.setControlador(controladorGUI);
+        ControladorMesaGUI controladorMesaGUI = new ControladorMesaGUI(modeloPartida, modeloRonda, vistaMesa);
+        vistaMesa.setControlador(controladorMesaGUI);
 
         // Cargamos FXML y asociamos el controlador
         FXMLLoader fxmlLoader = new FXMLLoader(BlackjackAppGUI.class.getResource("mesa.fxml"));

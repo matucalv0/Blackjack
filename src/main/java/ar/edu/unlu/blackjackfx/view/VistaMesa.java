@@ -1,18 +1,23 @@
 package ar.edu.unlu.blackjackfx.view;
 
 import ar.edu.unlu.blackjackfx.BlackjackAppGUI;
+import ar.edu.unlu.blackjackfx.controller.ControladorInicioGUI;
+import ar.edu.unlu.blackjackfx.controller.ControladorMesaGUI;
 import ar.edu.unlu.blackjackfx.model.Apuesta;
 import ar.edu.unlu.blackjackfx.model.Participante;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class VistaMesa extends VistaGUI {
+public class VistaMesa  {
     private int turnoMesa = 0;
     private boolean primerClickApuesta = false;
+    private ControladorMesaGUI controlador;
+    private BlackjackAppGUI app;
 
     @FXML
     Button btn50;
@@ -29,7 +34,11 @@ public class VistaMesa extends VistaGUI {
 
 
     public VistaMesa(BlackjackAppGUI app) {
-        super(app);
+        this.app = app;
+    }
+
+    public void setControlador(ControladorMesaGUI controlador){
+        this.controlador = controlador;
     }
 
 
@@ -42,8 +51,10 @@ public class VistaMesa extends VistaGUI {
 
     public void apostar(){
         controlador.jugadorApuesta(turnoMesa++);  //aumenta el turno despues de que el jugador apuesta
-
+        btnApostar.setVisible(false);
+        primerClickApuesta = false;
     }
+
 
 
     public void apuesta50(){
@@ -62,8 +73,6 @@ public class VistaMesa extends VistaGUI {
             primerClickApuesta = true;
         }
         controlador.recibirApuesta(100, turnoMesa);
-
-
     }
 
     public void apuesta200(){
@@ -82,7 +91,6 @@ public class VistaMesa extends VistaGUI {
             primerClickApuesta = true;
         }
         controlador.recibirApuesta(500, turnoMesa);
-
     }
 
     public void apuesta1000(){
@@ -92,7 +100,6 @@ public class VistaMesa extends VistaGUI {
             primerClickApuesta = true;
         }
         controlador.recibirApuesta(1000, turnoMesa);
-
     }
 
     public void resetTurnoMesa(){
@@ -115,6 +122,13 @@ public class VistaMesa extends VistaGUI {
         lblNombre.setText(nombre);
         lblApuesta.setText(apuesta + "");
         lblSaldo.setText(saldo + "");
+    }
+
+    protected void transicion(Node nodo){
+        FadeTransition ft = new FadeTransition(Duration.millis(500), nodo);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.play();
     }
 
 
