@@ -27,6 +27,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -110,7 +111,12 @@ public class VistaInicio {
         fxmlLoader.setController(vistaMesa);
 
         Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root, 900, 800);
+        Scene scene = new Scene(root, 900, 900);
+
+
+        scene.getStylesheets().add(
+                getClass().getResource("/ar/edu/unlu/blackjackfx/styles/styles.css").toExternalForm()
+        );
 
 
 

@@ -329,6 +329,14 @@
     -fx-opacity: 0.9;
 }
 
+.carta {
+    -fx-background-radius: 12px;
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, black, 10, 0.3, 0, 2);
+}
+
+
+
 
 
 

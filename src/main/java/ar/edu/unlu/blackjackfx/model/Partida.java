@@ -50,7 +50,7 @@ public class Partida implements Observable {
 
         ronda.agregarJugadorRonda(participante);
 
-        notificar(EVENTO_PARTIDA.APUESTA_RECIBIDA, null);
+        notificar(EVENTO_PARTIDA.APUESTA_RECIBIDA, true);
 
     }
 

@@ -28,11 +28,16 @@ public class ControladorMesaGUI implements Observador{
         modeloPartida.sumarApuesta(participante, apuesta);
     }
 
+    public void iniciarRonda(){
+
+        modeloRonda.rondaInicial();
+    }
+
 
     public void jugadorApuesta(int turno){
         modeloPartida.recibirApuesta(modeloPartida.getListaParticipantes().get(turno));
         if (turno == modeloPartida.getListaParticipantes().size()){
-
+            iniciarRonda();
         }
 
     }
@@ -46,7 +51,39 @@ public class ControladorMesaGUI implements Observador{
     @Override
     public void actualizar(Object evento, Object data) {
         switch (evento) {
-            case EVENTO_PARTIDA.APUESTA_RECIBIDA -> vista.mostrarJugadorConTurno(modeloPartida.getListaParticipantes().get(vista.getTurnoMesa()));
+            case EVENTO_PARTIDA.APUESTA_RECIBIDA -> {
+
+                // si el jugador solo sumo fichas
+                if (data == null) {
+                    vista.mostrarJugadorConTurno(
+                            modeloPartida.getListaParticipantes().get(vista.getTurnoMesa())
+                    );
+                    return;
+                }
+
+                // si el jugador confirmó apuesta -> pasar turno
+                vista.turnoSiguienteMesa();
+
+                // Si ya pasamos el último jugador -> arrancar ronda
+                if (vista.getTurnoMesa() == modeloPartida.getListaParticipantes().size()) {
+                    // resetear turno a 0 para la ronda
+                    vista.resetTurnoMesa();
+                    vista.ocultarApuestas();
+                    iniciarRonda();
+                    return;
+                }
+
+                // Mostrar al nuevo jugador actual
+                vista.mostrarJugadorConTurno(
+                        modeloPartida.getListaParticipantes().get(vista.getTurnoMesa())
+                );
+
+        }
+            case EVENTO_PARTIDA.PARTIDA_INICIADA -> {
+                vista.resetTurnoMesa();
+                vista.mostrarCartasCrupier(modeloRonda.getCrupier());
+                vista.mostrarJugadorConTurno(modeloRonda.participanteConTurno());
+            }
 
             default -> throw new IllegalStateException("Unexpected value: " + evento);
         }
