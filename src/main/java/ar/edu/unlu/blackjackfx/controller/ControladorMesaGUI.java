@@ -132,6 +132,7 @@ public class ControladorMesaGUI implements Observador{
                 vista.mostrarJugadorConTurno(modeloPartida.getListaParticipantes().getFirst());
                 modeloPartida.limpiarManos();
                 vista.refrescarVista();
+                vista.mostrarResultados(modeloPartida.getListaParticipantes());
 
             }
 

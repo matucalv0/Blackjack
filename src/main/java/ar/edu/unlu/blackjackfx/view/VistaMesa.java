@@ -6,12 +6,14 @@ import ar.edu.unlu.blackjackfx.controller.ControladorMesaGUI;
 import ar.edu.unlu.blackjackfx.model.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -47,6 +49,8 @@ public class VistaMesa {
     Label lblPuntajeCrupier;
     @FXML
     Label lblAviso;
+    @FXML
+    StackPane mesaJugador;
 
 
     public VistaMesa(BlackjackAppGUI app) {
@@ -97,9 +101,54 @@ public class VistaMesa {
         controlador.plantarse();
     }
 
-    public void mostrarEstadoRonda(){
+    public void mostrarResultados(ArrayList<Participante> jugadores) {
+        StringBuilder resultado = new StringBuilder("Resultados de la ronda:\n\n");
 
+        for (Participante p : jugadores) {
+            switch (p.getEstado()){
+                case ESTADO_RONDA.GANO -> resultado.append("✔ ").append(p.getNombre()).append(" ganó\n");
+                case ESTADO_RONDA.PERDIO -> resultado.append("✘ ").append(p.getNombre()).append(" perdió\n");
+                case ESTADO_RONDA.EMPATO -> resultado.append("➖ ").append(p.getNombre()).append(" empató\n");
+            }
+        }
+
+        mostrarToast(resultado.toString());
     }
+
+
+    public void mostrarToast(String mensaje) {
+        Label toast = new Label(mensaje);
+        toast.setStyle(
+                "-fx-background-color: rgba(0,0,0,0.8);" +
+                        "-fx-text-fill: white;" +
+                        "-fx-padding: 10px 20px;" +
+                        "-fx-background-radius: 10px;"
+        );
+        toast.setOpacity(0); // Comienza invisible
+
+        // Lo agregamos al stackPane (encima de todo)
+        mesaJugador.getChildren().add(toast);
+
+        // Animación de fade in
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), toast);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        // Pausa visible
+        PauseTransition stay = new PauseTransition(Duration.seconds(2));
+
+        // Animación de fade out
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), toast);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+
+        // Cuando termina, lo sacamos del stackpane
+        fadeOut.setOnFinished(e -> mesaJugador.getChildren().remove(toast));
+
+        SequentialTransition seq = new SequentialTransition(fadeIn, stay, fadeOut);
+        seq.play();
+    }
+
 
 
     public void apuesta50() {
