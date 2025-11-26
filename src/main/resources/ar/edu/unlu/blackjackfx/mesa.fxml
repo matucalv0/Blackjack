@@ -75,6 +75,15 @@
                <image>
                   <Image url="@images/playing-cards.png" />
                </image></ImageView>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnSalirMesa" mnemonicParsing="false" onAction="#salirDeMesa" prefHeight="29.0" prefWidth="27.0" styleClass="boton-salir" stylesheets="@styles/styles.css">
+               <graphic>
+                  <ImageView fitHeight="6.0" fitWidth="1.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" />
+               </HBox.margin>
+            </Button>
          </children></HBox>
    </top>
    <center>

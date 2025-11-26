@@ -7,6 +7,18 @@
     -fx-background-position: center center;
 }
 
+
+.boton-salir {
+    -fx-background-image: url("../images/salir.png");
+    -fx-background-size: 20px 20px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+    -fx-cursor: hand;
+}
+
+
 /* =======================
    Fondo para cualquier DialogPane
    ======================= */

@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ public class VistaMesa {
     Label lblAviso;
     @FXML
     StackPane mesaJugador;
+    @FXML
+    Button btnSalirMesa;
 
 
     public VistaMesa(BlackjackAppGUI app) {
@@ -101,6 +104,11 @@ public class VistaMesa {
         controlador.plantarse();
     }
 
+    public void salirDeMesa(){
+        Stage stage = (Stage) btnSalirMesa.getScene().getWindow();
+        stage.close();
+    }
+
     public void mostrarResultados(ArrayList<Participante> jugadores) {
         StringBuilder resultado = new StringBuilder("Resultados de la ronda:\n\n");
 
@@ -142,7 +150,7 @@ public class VistaMesa {
         fadeOut.setFromValue(1);
         fadeOut.setToValue(0);
 
-        // Cuando termina, lo sacamos del stackpane
+        // Cuando termina, lo saco del stackpane
         fadeOut.setOnFinished(e -> mesaJugador.getChildren().remove(toast));
 
         SequentialTransition seq = new SequentialTransition(fadeIn, stay, fadeOut);
