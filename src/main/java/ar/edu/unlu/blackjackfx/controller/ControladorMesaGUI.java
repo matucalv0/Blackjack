@@ -29,9 +29,15 @@ public class ControladorMesaGUI implements Observador{
     }
 
     public void iniciarRonda(){
-
         modeloRonda.rondaInicial();
     }
+
+    public void finDeRonda(){
+        modeloRonda.faseCrupier();
+        modeloRonda.finDeRonda();
+    }
+
+
 
 
     public void jugadorApuesta(int turno){
@@ -39,6 +45,15 @@ public class ControladorMesaGUI implements Observador{
         if (turno == modeloPartida.getListaParticipantes().size()){
             iniciarRonda();
         }
+
+    }
+
+    public void plantarse(){
+        modeloRonda.participanteSePlanta();
+    }
+
+    public void agregarCartaJugador(){
+        modeloRonda.participantePideCarta();
 
     }
 
@@ -83,6 +98,41 @@ public class ControladorMesaGUI implements Observador{
                 vista.resetTurnoMesa();
                 vista.mostrarCartasCrupier(modeloRonda.getCrupier());
                 vista.mostrarJugadorConTurno(modeloRonda.participanteConTurno());
+            }
+
+            case EVENTO_RONDA.CARTA_REPARTIDA -> {
+                vista.mostrarJugadorConTurno(modeloRonda.participanteConTurno());
+            }
+            case EVENTO_RONDA.JUGADOR_SE_PASA -> {
+                vista.mostrarAviso((Participante) data, "se pasó");
+
+                if (modeloRonda.getColaTurnos().isEmpty()){
+                    finDeRonda();
+                } else {
+                    vista.mostrarJugadorConTurno(modeloRonda.participanteConTurno());
+                }
+
+            }
+            case EVENTO_RONDA.JUGADOR_SE_PLANTA -> {
+                vista.mostrarAviso((Participante) data, "se plantó");
+
+                if (modeloRonda.getColaTurnos().isEmpty()){
+                    finDeRonda();
+                } else {
+                    vista.mostrarJugadorConTurno(modeloRonda.participanteConTurno());
+                }
+
+            }
+
+            case EVENTO_RONDA.CRUPIER_JUEGA -> {
+                vista.mostrarCartasCrupier((Crupier) data);
+            }
+
+            case EVENTO_RONDA.RONDA_TERMINADA -> {
+                vista.mostrarJugadorConTurno(modeloPartida.getListaParticipantes().getFirst());
+                modeloPartida.limpiarManos();
+                vista.refrescarVista();
+
             }
 
             default -> throw new IllegalStateException("Unexpected value: " + evento);

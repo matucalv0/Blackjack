@@ -82,6 +82,11 @@
          <children>
             <StackPane fx:id="mesaJugador" prefHeight="150.0" prefWidth="200.0">
                <children>
+                  <Label fx:id="lblAviso" text="El jugador se ha pasado" textFill="#110303" visible="false">
+                     <StackPane.margin>
+                        <Insets right="700.0" top="200.0" />
+                     </StackPane.margin>
+                  </Label>
                   <HBox fx:id="cartasCrupier" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0">
                      <StackPane.margin>
                         <Insets bottom="400.0" left="360.0" />
@@ -118,8 +123,8 @@
             </Button>
             <HBox prefHeight="34.0" prefWidth="378.0" spacing="10.0">
                <children>
-                  <Button fx:id="btnPedirCarta" mnemonicParsing="false" styleClass="boton-cristal" text="Pedir" />
-                  <Button fx:id="btnPlantarse" mnemonicParsing="false" styleClass="boton-cristal" text="Plantarse" />
+                  <Button fx:id="btnPedirCarta" mnemonicParsing="false" onAction="#pedirCarta" styleClass="boton-cristal" text="Pedir" />
+                  <Button fx:id="btnPlantarse" mnemonicParsing="false" onAction="#plantarse" styleClass="boton-cristal" text="Plantarse" />
                   <Button fx:id="btnDoblar" mnemonicParsing="false" styleClass="boton-cristal" text="Doblar" />
                   <Button fx:id="btnDividir" disable="true" mnemonicParsing="false" styleClass="boton-cristal" text="Dividir" />
                </children>

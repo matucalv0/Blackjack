@@ -5,6 +5,8 @@ import ar.edu.unlu.blackjackfx.controller.ControladorInicioGUI;
 import ar.edu.unlu.blackjackfx.controller.ControladorMesaGUI;
 import ar.edu.unlu.blackjackfx.model.*;
 import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -43,11 +45,23 @@ public class VistaMesa {
     HBox cartasCrupier;
     @FXML
     Label lblPuntajeCrupier;
+    @FXML
+    Label lblAviso;
 
 
     public VistaMesa(BlackjackAppGUI app) {
         this.app = app;
 
+    }
+
+    public void mostrarAviso(Participante participante, String mensaje){
+        lblAviso.setText("El jugador " + participante.getNombre() + " " + mensaje);
+        lblAviso.setVisible(true);
+
+        transicion(lblAviso);
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(e -> lblAviso.setVisible(false));
+        pause.play();
     }
 
     public void setControlador(ControladorMesaGUI controlador) {
@@ -60,11 +74,30 @@ public class VistaMesa {
         mostrarJugadorConTurno(app.getModeloPartida().getListaParticipantes().getFirst());
     }
 
+    public void refrescarVista(){
+        Platform.runLater(() -> cartasJugador.getChildren().clear());
+        Platform.runLater(() -> cartasCrupier.getChildren().clear());
+        fichas.setDisable(false);
+        lblPuntaje.setVisible(false);
+        lblPuntajeCrupier.setVisible(false);
+    }
+
+
+
+
 
     public void apostar() {
         btnApostar.setVisible(false);
         primerClickApuesta = false;
         controlador.jugadorApuesta(turnoMesa);  //aumenta el turno despues de que el jugador apuesta
+
+    }
+
+    public void plantarse(){
+        controlador.plantarse();
+    }
+
+    public void mostrarEstadoRonda(){
 
     }
 
@@ -157,6 +190,10 @@ public class VistaMesa {
 
     public void activarApuestas() {
         fichas.setDisable(false);
+    }
+
+    public void pedirCarta(){
+        controlador.agregarCartaJugador();
     }
 
 

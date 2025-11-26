@@ -3,6 +3,7 @@ package ar.edu.unlu.blackjackfx.model;
 public class Participante extends ParticipanteBase {
     private Jugador jugador;
     private Apuesta apuesta;
+    private ESTADO_RONDA estado;
 
 
     public Participante(Jugador jugador) {
@@ -16,6 +17,22 @@ public class Participante extends ParticipanteBase {
 
     public void sumarBanca(double dinero) {
         jugador.agregarDinero(dinero);
+    }
+
+    public void gano(){
+        this.estado = ESTADO_RONDA.GANO;
+    }
+
+    public void perdio(){
+        this.estado = ESTADO_RONDA.PERDIO;
+    }
+
+    public void empato(){
+        this.estado = ESTADO_RONDA.EMPATO;
+    }
+
+    public ESTADO_RONDA getEstado(){
+        return estado;
     }
 
 

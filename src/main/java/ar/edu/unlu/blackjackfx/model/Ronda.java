@@ -71,14 +71,12 @@ public class Ronda implements Observable {
         while(crupier.puntajeActual() < 17){
             crupier.agregarCarta(mazo.repartirCarta());
         }
-        notificar(EVENTO_RONDA.CRUPIER_JUEGA, null );
+        notificar(EVENTO_RONDA.CRUPIER_JUEGA, crupier );
     }
 
 
     public void participanteSePaso(){
-        if (participanteConTurno().getMano().sePaso()){
-            notificar(colaTurnos.poll(), null );
-        }
+        notificar(EVENTO_RONDA.JUGADOR_SE_PASA, colaTurnos.poll());
     }
 
     public boolean jugadorTieneUnaSolaMano(){
@@ -93,10 +91,10 @@ public class Ronda implements Observable {
         if (participante.getMano().sePaso()){
             if ((participante.getManos().size() > 1) && (participante.manoActual == 0)){  //si dividio y es la mano 1, incrementa el indice
                 participante.incrementarIndiceMano();
-                notificar(EVENTO_RONDA.JUGADOR_SE_PASA, null );
+                participante.perdio();
+                participanteSePaso();
                 return;
             }
-            notificar(EVENTO_RONDA.JUGADOR_SE_PASA, null);
             participanteSePaso();
         } else {
             notificar(EVENTO_RONDA.CARTA_REPARTIDA, null);
@@ -111,18 +109,21 @@ public class Ronda implements Observable {
         for (Participante participante: participantesActivosFinalRonda){
             if (participante.getManos().size() == 2){
                 if (hizoBlackjack(crupier)){   //si hizo blackjack, pierde (no hay blackjack si dividis)
+                    participante.perdio();
                     participantes.add(participante);
                     break;
                 }
-                for(Mano mano: participante.getManos()){
+                for( Mano mano: participante.getManos()){
                     if(mano.sePaso()) {   //si se paso la mano, pierde
+                        participante.perdio();
                         break;
                     }
-
                     if((mano.puntaje() > crupier.puntajeActual()) || crupier.getMano().sePaso()){
                         pagoNormalDivision(participante);
+                        participante.gano();
                     } else if (mano.puntaje() == crupier.puntajeActual()){
                         devolverDineroDivision(participante);
+                        participante.empato();
                     }
                 }
 
@@ -148,13 +149,18 @@ public class Ronda implements Observable {
             for (Participante participante: participantesActivosFinalRonda){
                 pagoNormal(participante);
                 participante.getApuesta().clearApuesta();
+                participante.gano();
             }
         } else {
             for (Participante participante: participantesActivosFinalRonda){
                 if (participante.puntajeActual() > crupier.puntajeActual()){
                     pagoNormal(participante);
+                    participante.gano();
                 } else if (participante.puntajeActual() == crupier.puntajeActual()){
                     devolverDinero(participante);
+                    participante.empato();
+                } else{
+                    participante.perdio();
                 }
                 participante.getApuesta().clearApuesta();
             }
@@ -200,12 +206,13 @@ public class Ronda implements Observable {
         Participante participante = participanteConTurno();
         if ((participante.getManos().size() > 1) && (participante.manoActual == 0)) {  //si dividio y es la mano 1, incrementa el indice
             participante.incrementarIndiceMano();
-            notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA, null);
+            notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA, participante);
             return;
         }
 
-        participantesActivosFinalRonda.add(colaTurnos.poll());
-        notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA,null );
+        Participante participanteAux = colaTurnos.poll();
+        participantesActivosFinalRonda.add(participanteAux);
+        notificar(EVENTO_RONDA.JUGADOR_SE_PLANTA, participanteAux);
     }
 
     public Participante participanteConTurno(){
