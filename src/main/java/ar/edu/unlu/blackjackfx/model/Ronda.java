@@ -95,6 +95,7 @@ public class Ronda implements Observable {
                 participanteSePaso();
                 return;
             }
+            participante.perdio();
             participanteSePaso();
         } else {
             notificar(EVENTO_RONDA.CARTA_REPARTIDA, null);
