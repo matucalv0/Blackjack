@@ -89,7 +89,9 @@ public class VistaMesa {
         lblPuntajeCrupier.setVisible(false);
     }
 
-
+    public void pasar(){
+        controlador.pasarFaseApuesta(turnoMesa);
+    }
 
 
 
@@ -117,6 +119,7 @@ public class VistaMesa {
                 case ESTADO_RONDA.GANO -> resultado.append("✔ ").append(p.getNombre()).append(" ganó\n");
                 case ESTADO_RONDA.PERDIO -> resultado.append("✘ ").append(p.getNombre()).append(" perdió\n");
                 case ESTADO_RONDA.EMPATO -> resultado.append("➖ ").append(p.getNombre()).append(" empató\n");
+                case null, default -> {}
             }
         }
 

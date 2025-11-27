@@ -40,12 +40,14 @@ public class ControladorInicioGUI implements Observador{
                     }
                 }
             case EVENTO_PARTIDA.APUESTA_RECIBIDA -> {}
+            case EVENTO_PARTIDA.JUGADOR_PASO -> {}
             case EVENTO_PARTIDA.PARTIDA_INICIADA -> {}
             case EVENTO_RONDA.CARTA_REPARTIDA -> {}
             case EVENTO_RONDA.JUGADOR_SE_PASA -> {}
             case EVENTO_RONDA.CRUPIER_JUEGA -> {}
             case EVENTO_RONDA.RONDA_TERMINADA -> {}
             case EVENTO_RONDA.JUGADOR_SE_PLANTA -> {}
+
 
 
             default -> throw new IllegalStateException("Unexpected value: " + evento);

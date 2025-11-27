@@ -32,9 +32,27 @@ public class ControladorMesaGUI implements Observador{
         modeloRonda.rondaInicial();
     }
 
+    public void pasarFaseApuesta(int turno){
+        if (turno == 0){
+            modeloPartida.jugadorPaso(modeloPartida.getListaParticipantes().get(turno));
+        } else {
+            modeloPartida.jugadorPaso(modeloPartida.getListaParticipantes().get(turno-1));
+        }
+
+
+    }
+
+
+
+
+
     public void finDeRonda(){
         modeloRonda.faseCrupier();
         modeloRonda.finDeRonda();
+    }
+
+    public Participante getParticipanteTurnoMesa(int turno){
+        return modeloPartida.getListaParticipantes().get(turno);
     }
 
 
@@ -57,9 +75,6 @@ public class ControladorMesaGUI implements Observador{
 
     }
 
-    public int jugadoresEnLaMesa(){
-        return modeloPartida.getListaParticipantes().size();
-    }
 
 
 
@@ -100,6 +115,24 @@ public class ControladorMesaGUI implements Observador{
                 vista.mostrarJugadorConTurno(modeloRonda.participanteConTurno());
             }
 
+            case EVENTO_PARTIDA.JUGADOR_PASO -> {
+                vista.turnoSiguienteMesa();
+
+                if (vista.getTurnoMesa() == modeloPartida.getListaParticipantes().size()) {
+                    // resetear turno a 0 para la ronda
+                    vista.resetTurnoMesa();
+                    vista.ocultarApuestas();
+                    iniciarRonda();
+                    return;
+                }
+
+                // Mostrar al nuevo jugador actual
+
+                vista.mostrarJugadorConTurno(
+                        modeloPartida.getListaParticipantes().get(vista.getTurnoMesa())
+                );
+            }
+
             case EVENTO_RONDA.CARTA_REPARTIDA -> {
                 vista.mostrarJugadorConTurno(modeloRonda.participanteConTurno());
             }
@@ -123,6 +156,8 @@ public class ControladorMesaGUI implements Observador{
                 }
 
             }
+
+
 
             case EVENTO_RONDA.CRUPIER_JUEGA -> {
                 vista.mostrarCartasCrupier((Crupier) data);

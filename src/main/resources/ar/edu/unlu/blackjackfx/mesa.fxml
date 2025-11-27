@@ -125,11 +125,15 @@
                      </StackPane.margin>
                   </VBox>
                </children></StackPane>
-            <Button fx:id="btnApostar" mnemonicParsing="false" onAction="#apostar" styleClass="boton-cristal" stylesheets="@styles/styles.css" text="Apostar" visible="false">
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btnApostar" mnemonicParsing="false" onAction="#apostar" styleClass="boton-cristal" stylesheets="@styles/styles.css" text="Apostar" visible="false" />
+                   <Button fx:id="btnPasar" mnemonicParsing="false" onAction="#pasar" styleClass="boton-cristal" stylesheets="@styles/styles.css" text="Pasar" visible="true" />
+               </children>
                <VBox.margin>
-                  <Insets left="400.0" top="10.0" />
+                  <Insets left="340.0" top="10.0" />
                </VBox.margin>
-            </Button>
+            </HBox>
             <HBox prefHeight="34.0" prefWidth="378.0" spacing="10.0">
                <children>
                   <Button fx:id="btnPedirCarta" mnemonicParsing="false" onAction="#pedirCarta" styleClass="boton-cristal" text="Pedir" />

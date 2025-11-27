@@ -23,7 +23,10 @@ public class Partida implements Observable {
         participante.getApuesta().sumar(monto);
         participante.restarBanca(monto);
         notificar(EVENTO_PARTIDA.APUESTA_RECIBIDA, null);
+    }
 
+    public void jugadorPaso(Participante participante){
+        notificar(EVENTO_PARTIDA.JUGADOR_PASO, participante);
     }
 
     public void limpiarManos(){
